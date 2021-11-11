@@ -1,8 +1,14 @@
-﻿namespace MyCurriculum.Models
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MyCurriculum.Models
 {
     public class Experience
     {
+        [Key]
         public int Id { get; set; }
+        [ForeignKey("Id")]
         public Curriculum Curriculum_Id { get; set; }
         public DateTime DateHiring { get; set; }//data de contratação
         public DateTime DateResignation { get; set; }//data de demissão

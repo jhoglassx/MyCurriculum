@@ -1,8 +1,15 @@
-﻿namespace MyCurriculum.Models
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MyCurriculum.Models
 {
     public class Curriculum
     {
+        [Key]
         public int Id { get; set; }
+        [ForeignKey("Id")]
         public Account Account_Id { get; set; }
         public string Email { get; set; }
         public int TelePhone { get; set; }
