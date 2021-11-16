@@ -25,7 +25,13 @@ namespace MyCurriculum.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Curriculum>>> GetCurriculums()
         {
-            return await _context.Curriculums.ToListAsync();
+            return await _context.Curriculums
+                .Include(ad => ad.Address)
+                .Include(ex => ex.Experiences)
+                .Include(ae => ae.AcademicEducations)
+                .Include(cs => cs.Courses)
+                .Include(sk => sk.Skills)
+                .ToListAsync();
         }
 
         // GET: api/Curriculums/5
@@ -45,7 +51,7 @@ namespace MyCurriculum.Controllers
         // PUT: api/Curriculums/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCurriculum(int id, Curriculum curriculum)
+        public async Task<IActionResult> PutCurriculum(int id, [FromForm]Curriculum curriculum)
         {
             if (id != curriculum.Id)
             {
@@ -76,24 +82,10 @@ namespace MyCurriculum.Controllers
         // POST: api/Curriculums
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Curriculum>> PostCurriculum(Curriculum curriculum)
+        public async Task<ActionResult<Curriculum>> PostCurriculum([FromForm]Curriculum curriculum)
         {
             _context.Curriculums.Add(curriculum);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (CurriculumExists(curriculum.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCurriculum", new { id = curriculum.Id }, curriculum);
         }
