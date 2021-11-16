@@ -8,8 +8,7 @@ namespace MyCurriculum.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Id")]
-        public Curriculum Curriculum_Id { get; set; }
+        public virtual Curriculum Curriculum { get; set; }
         public DateTime DateHiring { get; set; }//data de contratação
         public DateTime DateResignation { get; set; }//data de demissão
         public string Company { get; set; }//Empresa

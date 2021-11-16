@@ -8,8 +8,7 @@ namespace MyCurriculum.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Id")]
-        public Curriculum Curriculum_Id { get; set; }
+        public virtual Curriculum Curriculum { get; set; }
         public int ZipCode { get; set; }
         public string Road { get; set; }
         public string District { get; set; }

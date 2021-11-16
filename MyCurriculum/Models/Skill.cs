@@ -8,8 +8,7 @@ namespace MyCurriculum.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Id")]
-        public Curriculum Curriculum_Id {get; set; }
+        public virtual Curriculum Curriculum { get; set; }
         public string Title { get; set; }
         public int SkillTime { get; set; }//tempo de Experiencia
         public int SkillNivel { get; set; }//Nivel de Experiencia
