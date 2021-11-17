@@ -25,13 +25,7 @@ namespace MyCurriculum.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Curriculum>>> GetCurriculums()
         {
-            return await _context.Curriculums
-                .Include(ad => ad.Address)
-                .Include(ex => ex.Experiences)
-                .Include(ae => ae.AcademicEducations)
-                .Include(cs => cs.Courses)
-                .Include(sk => sk.Skills)
-                .ToListAsync();
+            return await _context.Curriculums.ToListAsync();
         }
 
         // GET: api/Curriculums/5
