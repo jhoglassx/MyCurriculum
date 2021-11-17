@@ -18,9 +18,9 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
-            <Route path='/curriculos' component={Curriculums} />
-            <Route path='/curriculo/:id' component={Curriculum} />
-            <Route path='/curriculo/' component={Curriculum} />
+        <Route path='/curriculos' component={Curriculums} />
+        <Route path='/curriculo/:id' component={Curriculum} />
+        <Route path='/curriculo/' component={Curriculum} />
       </Layout>
     );
   }
