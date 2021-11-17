@@ -6,7 +6,6 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Curriculums } from './components/Curriculum/Curriculums';
 import { Curriculum } from './components/Curriculum/Curriculum';
-import { CurriculumNew } from './components/Curriculum/Curriculum';
 import './custom.css'
 
 
@@ -21,7 +20,7 @@ export default class App extends Component {
         <Route path='/fetch-data' component={FetchData} />
             <Route path='/curriculos' component={Curriculums} />
             <Route path='/curriculo/:id' component={Curriculum} />
-            <Route path='/curriculo' component={CurriculumNew} />
+            <Route path='/curriculo/' component={Curriculum} />
       </Layout>
     );
   }
