@@ -10,9 +10,10 @@ namespace MyCurriculum.Models
         [Key]
         public int Id { get; set; }
         public virtual Account Account { get; set; }
+        public string Title { get; set; }
         public string Email { get; set; }
-        public int TelePhone { get; set; }
-        public int CellPhone { get; set; }
+        public int Telephone { get; set; }
+        public int Cellphone { get; set; }
         public string Resume { get; set; }
         public DateTime Created_at { get; set; }
         public DateTime Updated_at { get; set; }

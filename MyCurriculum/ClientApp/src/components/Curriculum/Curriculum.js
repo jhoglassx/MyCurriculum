@@ -1,85 +1,115 @@
-﻿import { data } from 'jquery';
-import React, { Component } from 'react'
-//import './components/Curriculum/Curriculum.css'
+﻿import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+
+export class CurriculumModel {
+    constructor() {
+        this.id = 0;
+        this.title = "";
+        this.email = "";
+        this.telephone = "";
+        this.cellphone = "";
+        this.resume = "";
+    }
+}
 
 export class Curriculum extends Component {
-    static displayName = "Curriculo";
+    constructor(props) {
+        super(props);
+        this.state = { title: "", curriculum: new CurriculumModel(), loading: true };
+        this.initialize();
 
-    constructor() {
-        super();
-        this.state = { curriculums: [], loading: true }
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
-    async loadCurriculum() {
-        const response = await fetch('api/Curriculums');
-        const data = await response.json();
-        this.setState({ curriculums: data, loading: false });
-    }
-
-    componentDidMount() {
-        this.loadCurriculum();
-    }
-
-    static handledEdit(id) {
-        window.location.href = "/curriculo/edit/" + id;
-    }
-
-    static handledView(id) {
-        window.location.href = "/curriculo/" + id;
-    }
-
-    static handledDelete(id) {
-        if (!window.confirm("Você deseja deletar este Curriculo : " + id)) {
-            return;
+    async initialize() {
+        
+        var id = this.props.match.params["id"];
+        
+        if (id > 0) {
+            const response = await fetch('api/Curriculums/' + id);
+            const data = await response.json();
+            this.setState({ title: "Edit", curriculum: data, loading: false });
         }
         else
         {
-            fetch('api/Curriculums/' + id, { method: 'delete' })
-                .then(json => {
-                    window.location.href = "curriculos";
-                    alert('Deletado com Sucesso');
-                })
+            this.state = { title: "Create", curriculum: new CurriculumModel(), loading: false };
         }
     }
-    static renderCurriculum(curriculums) {
-        return (
-            <table className='table table-striped' aria-labelledby='tableLabel'>
-                <thead>
-                    <th>id</th>
-                    <th>Email</th>
-                    <th></th>
-                </thead>
-                <tbody>
-                    {curriculums.map(c =>
-                        <tr key={c.i}>
-                            <td>{c.id}</td>
-                            <td>{c.email}</td>
-                            <td>
-                                <button className='btn btn-success' onClick={(id) => this.handledView(c.id)}>Ver</button>
-                                <button className='btn btn-success' onClick={(id) => this.handledEdit(c.id)}>Edit</button>
-                                <button className='btn btn-danger' onClick={(id) => this.handledDelete(c.id)}>Delete</button>
-                            </td>
-                        </tr>
-                        )}
-                </tbody>
-            </table>
-            );
+
+    handleCancel(event) {
+        event.preventDefault();
+        this.props.history.push("/Curriculum")
+    }
+
+    handleSave(event) {
+        event.preventDefault();
+
+        const data = new FormData(event.target);
+
+        if (this.state.curriculum.id > 0) {
+            const response1 = fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
+            this.props.history.push("/Curriculum");
+        }
+        else
+        {
+            const response2 = fetch('api/Curriculums/', { method: "POST", body: data });
+            this.props.history.push("/Curriculum");
+        }
     }
 
     render() {
         let contents = this.state.loading
             ? <p><em> Carregando... </em></p>
-            : Curriculum.renderCurriculum(this.state.curriculums);
-
+            : this.renderCurriculum();
         return (
             <div>
-                <h1 id="tabelLabel">Curriculuns</h1>
-                <p>Tela de Listagem de Curriculuns</p>
-                <p>
-                    {/*<link to="/add-curriculum">Cadastrar curriculum</link>*/}
-                </p>
+                <h1>{this.state.title}</h1>
+                <p>Tela do Curriculum</p>
                 {contents}
             </div>
-            );
+        );
+    }
+
+    renderCurriculum() {
+        return (
+            <div className="">
+                <form onSubmit={this.handleSave}>
+
+                    <div className="form-group row">
+                        <input type="hidden" name="id" value={this.state.curriculum.id} />
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-6">
+                            <input className="form-control" type="text" name="title" value={this.state.curriculum.title} required />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-6">
+                            <input className="form-control" type="text" name="email" value={this.state.curriculum.email} required />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-6">
+                            <input className="form-control" type="text" name="telephone" value={this.state.curriculum.telephone} required />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-6">
+                            <input className="form-control" type="text" name="cellphone" value={this.state.curriculum.cellphone} required />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-12">
+                            <input className="form-control" type="text" name="resume" value={this.state.curriculum.resume} required />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
+                        <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        );
     }
 }
