@@ -18,7 +18,7 @@ namespace MyCurriculum.Models
         public DateTime Created_at { get; set; }
         public DateTime Updated_at { get; set; }
 
-        public virtual ICollection<Address> Address { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Experience> Experiences { get; set; }
         public virtual ICollection<AcademicEducation> AcademicEducations { get; set; }
         public virtual ICollection<Course> Courses { get; set; }

@@ -46,11 +46,11 @@ export class Curriculum extends Component {
             const response = await fetch('api/Curriculums/' + id);
             const curriculum = await response.json();
 
-            const response = await fetch('api/Curriculums/' + id);
-            const curriculum = await response.json();
+            const response2 = await fetch('api/Addresses/' + id);
+            const address = await response2.json();
 
 
-            this.setState({ title: "Edit", curriculum: curriculum,, loading: false });
+            this.setState({ title: "Edit", curriculum: curriculum, address: address, loading: false });
         }
         else
         {
@@ -112,7 +112,8 @@ export class Curriculum extends Component {
                                     <div className="row">
                                         <div className="form-group col-md-12">
                                             <div className="div-control">
-                                                <i class="bi bi-envelope-fill"></i>{this.state.curriculum.email}
+                                            <i class="bi bi-envelope-fill"></i>{this.state.curriculum.email}
+                                            <i class="bi bi-envelope-fill"></i>{this.state.address.zipcode}
                                             </div>
                                         </div>
                                         <div className="form-group col-md-12">

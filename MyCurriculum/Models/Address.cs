@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyCurriculum.DataContext;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +8,11 @@ namespace MyCurriculum.Models
 {
     public class Address
     {
+        public Address()
+        {
+            Curriculum = Curriculum;
+        }
+
         [Key]
         public int Id { get; set; }
         public virtual Curriculum Curriculum { get; set; }
