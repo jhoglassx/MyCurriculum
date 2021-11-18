@@ -6,8 +6,8 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Curriculums } from './components/Curriculum/Curriculums';
 import { Curriculum } from './components/Curriculum/Curriculum';
-import './custom.css'
-
+import './custom.css';
+import './components/Curriculum/curriculum.css';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -19,8 +19,8 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/curriculos' component={Curriculums} />
+        <Route path='/curriculo/edit/:id' component={Curriculum} />
         <Route path='/curriculo/:id' component={Curriculum} />
-        <Route path='/curriculo/' component={Curriculum} />
       </Layout>
     );
   }

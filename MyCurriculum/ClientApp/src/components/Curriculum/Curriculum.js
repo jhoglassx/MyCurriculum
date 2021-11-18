@@ -1,5 +1,6 @@
-﻿import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+﻿import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 
 export class CurriculumModel {
     constructor() {
@@ -72,42 +73,81 @@ export class Curriculum extends Component {
     }
 
     renderCurriculum() {
+        const textArea = document.querySelector('textarea');
+        const textRowCount = textArea ? textArea.value.substring(100).length : 0;
+        const rows = textRowCount + 1;
         return (
-            <div className="">
+            
+            <div className="curriculum">
                 <form onSubmit={this.handleSave}>
+                    <input type="hidden" name="id" value={this.state.curriculum.id} />
+                    <div className="row">
+                        <div className="curriculum_left col-md-3">
+                        </div>
+                        <div className="curriculum_right col-md-9">
+                            <div className="row">
+                                <div className="form-group col-md-12">
+                                    <div className="">
+                                        <input className="name form-control text-center" type="text" name="name" placeholder="Nome" defaultValue="Jhoglas Shopsigner Xavier Rocha" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group col-md-12 mx-auto">
+                                    <div className="">
+                                        <input className="profession form-control text-left" type="text" name="profession" placeholder="Profissão" defaultValue="Programador Full Stack" required />
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div className="form-group row">
-                        <input type="hidden" name="id" value={this.state.curriculum.id} />
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-md-6">
-                            <input className="form-control" type="text" name="title" value={this.state.curriculum.title} required />
+                            <div className="row">
+                                <div className="form-group col-md-12">
+                                <div className="">
+                                    <textarea rows={rows} className="resume form-control" name="resume" placeholder="Resumo" required>
+                                        {this.state.curriculum.resume}
+                                    </textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="row">
+                                <div className="form-group col-md-12">
+                                    <div className="">
+                                        <input className="form-control" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group col-md-6">
+                                    <div className="">
+                                        <input className="form-control" type="text" name="email" placeholder="Email" defaultValue={this.state.curriculum.email} required />
+                                    </div>
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <div className="">
+                                        <input className="form-control" type="tel" name="telephone" placeholder="Telefone" defaultValue={this.state.curriculum.telephone} required />
+                                    </div>
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <div className="">
+                                        <input className="form-control" type="tel" name="cellphone" placeholder="Celular" defaultValue={this.state.curriculum.cellphone} required />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="row">
+                                <div className="form-group col-md-12">
+                                    <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
+                                    <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="form-group row">
-                        <div className="col-md-6">
-                            <input className="form-control" type="text" name="email" value={this.state.curriculum.email} required />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-md-6">
-                            <input className="form-control" type="text" name="telephone" value={this.state.curriculum.telephone} required />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-md-6">
-                            <input className="form-control" type="text" name="cellphone" value={this.state.curriculum.cellphone} required />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-md-12">
-                            <input className="form-control" type="text" name="resume" value={this.state.curriculum.resume} required />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
-                        <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
-                    </div>
+
+
+                    
                 </form>
             </div>
         );

@@ -1,0 +1,42 @@
+﻿/*https://img.elo7.com.br/product/zoom/352ED0D/curriculo-black-white-template-curriculo-flor.jpg*/
+.curriculum {
+    width: 100%;
+    border: 1px solid #000000;
+}
+.curriculum .row{
+    margin:0;
+}
+.curriculum .form-group {
+    margin:1px;
+}
+.curriculum .form-control {
+    /*padding: 0;*/
+    height:auto;
+}
+.curriculum input {
+    border: 0px;
+}
+.curriculum textarea {
+    border: 0px;
+    height: unset;
+    resize: none;
+    overflow-y: hidden;
+}
+.curriculum input.name {
+    text-transform: capitalize;
+    font-size: 32px;
+    font-weight: bold;
+}
+    .curriculum input.profession {
+        background: #808080;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color:#ffffff;
+    }
+.curriculum_left {
+    background: #808080;
+}
+.curriculum_right{
+    width:100%
+}
