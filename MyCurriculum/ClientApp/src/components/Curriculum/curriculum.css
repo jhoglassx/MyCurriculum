@@ -1,42 +1,68 @@
 ﻿/*https://img.elo7.com.br/product/zoom/352ED0D/curriculo-black-white-template-curriculo-flor.jpg*/
 .curriculum {
-    width: 100%;
-    border: 1px solid #000000;
+    background: #f5f5f5; 
+    width: 210mm; 
+    min-height: 297mm;
+    margin-left: auto; 
+    margin-right: auto;
 }
 .curriculum .row{
     margin:0;
 }
 .curriculum .form-group {
     margin:1px;
+    padding:0;
 }
-.curriculum .form-control {
+.curriculum div.div-control {
     /*padding: 0;*/
-    height:auto;
-}
-.curriculum input {
+    height: auto;
     border: 0px;
+    background: none;
 }
+
 .curriculum textarea {
     border: 0px;
     height: unset;
     resize: none;
     overflow-y: hidden;
 }
-.curriculum input.name {
+.curriculum div.name {
     text-transform: capitalize;
     font-size: 32px;
     font-weight: bold;
 }
-    .curriculum input.profession {
-        background: #808080;
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        color:#ffffff;
-    }
-.curriculum_left {
+.curriculum div.profession {
     background: #808080;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+.curriculum_left {
+    background: #13293d;
+    min-height: 297mm;
 }
 .curriculum_right{
     width:100%
+}
+
+.curriculum_left div.photograph {
+    width: 100%;
+    overflow: hidden;
+    padding:10px;
+}
+.curriculum_left div.photograph img {
+    width: 100%;
+}
+
+.curriculum_left div.contacts {
+    color: #f5f5f5;
+}
+
+.curriculum_left div.contacts h1 {
+    text-transform:uppercase;
+    font-size:18px;
+    font-weight:bold;
+    text-align:center;
+    color:#1b98e0;
 }

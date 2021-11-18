@@ -24,8 +24,8 @@ export class Curriculums extends Component {
         window.location.href = "/curriculo/edit/" + id;
     }
 
-    static handledView(id) {
-        window.location.href = "/curriculo/" + id;
+    static handledView(id,name) {
+        window.location.href = "/curriculo/" + id+"/"+name;
     }
 
     static handledDelete(id) {
@@ -55,7 +55,7 @@ export class Curriculums extends Component {
                             <td>{c.id}</td>
                             <td>{c.email}</td>
                             <td>
-                                <button className='btn btn-success' onClick={(id) => this.handledView(c.id)}>Ver</button>
+                                <button className='btn btn-success' onClick={(id) => this.handledView(c.id, c.name)}>Ver</button>
                                 <button className='btn btn-success' onClick={(id) => this.handledEdit(c.id)}>Edit</button>
                                 <button className='btn btn-danger' onClick={(id) => this.handledDelete(c.id)}>Delete</button>
                             </td>

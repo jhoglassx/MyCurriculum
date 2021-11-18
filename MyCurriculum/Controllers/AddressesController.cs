@@ -12,47 +12,47 @@ namespace MyCurriculum.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CurriculumsController : ControllerBase
+    public class AddressesController : ControllerBase
     {
         private readonly Context _context;
 
-        public CurriculumsController(Context context)
+        public AddressesController(Context context)
         {
             _context = context;
         }
 
-        // GET: api/Curriculums
+        // GET: api/Addresses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Curriculum>>> GetCurriculums()
+        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
-            return await _context.Curriculums.ToListAsync();
+            return await _context.Addresses.ToListAsync();
         }
 
-        // GET: api/Curriculums/5
+        // GET: api/Addresses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Curriculum>> GetCurriculum(int id)
+        public async Task<ActionResult<Address>> GetAddress(int id)
         {
-            var curriculum = await _context.Curriculums.FindAsync(id);
+            var address = await _context.Addresses.FindAsync(id);
 
-            if (curriculum == null)
+            if (address == null)
             {
                 return NotFound();
             }
 
-            return curriculum;
+            return address;
         }
 
-        // PUT: api/Curriculums/5
+        // PUT: api/Addresses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCurriculum(int id,[FromForm]Curriculum curriculum)
+        public async Task<IActionResult> PutAddress(int id,[FromForm] Address address)
         {
-            if (id != curriculum.Id)
+            if (id != address.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(curriculum).State = EntityState.Modified;
+            _context.Entry(address).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace MyCurriculum.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CurriculumExists(id))
+                if (!AddressExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace MyCurriculum.Controllers
             return NoContent();
         }
 
-        // POST: api/Curriculums
+        // POST: api/Addresses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Curriculum>> PostCurriculum([FromForm]Curriculum curriculum)
+        public async Task<ActionResult<Address>> PostAddress([FromForm] Address address)
         {
-            _context.Curriculums.Add(curriculum);
+            _context.Addresses.Add(address);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCurriculum", new { id = curriculum.Id }, curriculum);
+            return CreatedAtAction("GetAddress", new { id = address.Id }, address);
         }
 
-        // DELETE: api/Curriculums/5
+        // DELETE: api/Addresses/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCurriculum(int id)
+        public async Task<IActionResult> DeleteAddress(int id)
         {
-            var curriculum = await _context.Curriculums.FindAsync(id);
-            if (curriculum == null)
+            var address = await _context.Addresses.FindAsync(id);
+            if (address == null)
             {
                 return NotFound();
             }
 
-            _context.Curriculums.Remove(curriculum);
+            _context.Addresses.Remove(address);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CurriculumExists(int id)
+        private bool AddressExists(int id)
         {
-            return _context.Curriculums.Any(e => e.Id == id);
+            return _context.Addresses.Any(e => e.Id == id);
         }
     }
 }

@@ -6,22 +6,23 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Curriculums } from './components/Curriculum/Curriculums';
 import { Curriculum } from './components/Curriculum/Curriculum';
+import { CurriculumEdit } from './components/Curriculum/CurriculumEdit';
 import './custom.css';
 import './components/Curriculum/curriculum.css';
 
 export default class App extends Component {
   static displayName = App.name;
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-        <Route path='/curriculos' component={Curriculums} />
-        <Route path='/curriculo/edit/:id' component={Curriculum} />
-        <Route path='/curriculo/:id' component={Curriculum} />
-      </Layout>
-    );
-  }
+    render () {
+        return (
+            <Layout>
+                <Route exact path='/' component={Home} />
+                <Route path='/counter' component={Counter} />
+                <Route path='/fetch-data' component={FetchData} />
+                <Route path='/curriculos' component={Curriculums} />
+                <Route path='/curriculo/edit/:id' component={CurriculumEdit} />
+                <Route path='/curriculo/:id/:name' component={Curriculum} />
+            </Layout>
+        );
+    }
 }

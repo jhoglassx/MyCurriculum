@@ -15,7 +15,7 @@ export class CurriculumModel {
     }
 }
 
-export class Curriculum extends Component {
+export class CurriculumEdit extends Component {
     constructor(props) {
         super(props);
         this.state = { title: "", curriculum: new CurriculumModel(), loading: true };
@@ -29,7 +29,7 @@ export class Curriculum extends Component {
         const input = document.getElementById('divToPrint');
         html2canvas(input)
             .then((canvas) => {
-                const imgData = canvas.toDataURL('img/png');
+                const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF();
                 pdf.addImage(imgData, 'JPEG', 0, 0);
                 // pdf.output('dataurlnewwindow');
@@ -38,19 +38,15 @@ export class Curriculum extends Component {
             ;
     }
 
+
     async initialize() {
         
         var id = this.props.match.params["id"];
         
         if (id > 0) {
             const response = await fetch('api/Curriculums/' + id);
-            const curriculum = await response.json();
-
-            const response = await fetch('api/Curriculums/' + id);
-            const curriculum = await response.json();
-
-
-            this.setState({ title: "Edit", curriculum: curriculum,, loading: false });
+            const data = await response.json();
+            this.setState({ title: "Edit", curriculum: data, loading: false });
         }
         else
         {
@@ -85,6 +81,8 @@ export class Curriculum extends Component {
             : this.renderCurriculum();
         return (
             <div>
+                <h1>{this.state.title}</h1>
+                <p>Tela do Curriculum</p>
                 {contents}
             </div>
         );
@@ -101,66 +99,76 @@ export class Curriculum extends Component {
                 </div>
             
                 <div id="divToPrint" className="curriculum">
+                    <form onSubmit={this.handleSave}>
                         <input type="hidden" name="id" value={this.state.curriculum.id} />
                         <div className="row">
                             <div className="curriculum_left col-md-3">
-                                <div className="photograph">
-                                    <img src="https://thumbs.dreamstime.com/z/3-4-mannequin-gradient-9422208.jpg" />
-                                </div>
-                                <div className="contacts">
-                                    <h1>Contatos</h1>
-                                    <div className="row">
-                                        <div className="form-group col-md-12">
-                                            <div className="div-control">
-                                                <i class="bi bi-envelope-fill"></i>{this.state.curriculum.email}
-                                            </div>
-                                        </div>
-                                        <div className="form-group col-md-12">
-                                            <div className="div-control">
-                                                <i class="bi bi-telephone-fill"></i>{this.state.curriculum.telephone}
-                                            </div>
-                                        </div>
-                                        <div className="form-group col-md-12">
-                                            <div className="div-control">
-                                                <i class="bi bi-telephone-fill"></i>{this.state.curriculum.cellphone}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div className="curriculum_right col-md-9">
                                 <div className="row">
                                     <div className="form-group col-md-12">
-                                        <div className="name div-control text-center">
-                                            <span>Jhoglas Shopsigner Xavier Rocha</span>
+                                        <div className="name form-control text-center">
+                                            Jhoglas Shopsigner Xavier Rocha
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="form-group col-md-12 mx-auto">
-                                        <div className="profession div-control text-left">
-                                            Programador Full Stack
+                                        <div className="">
+                                            <input className="profession form-control text-left" type="text" name="profession" placeholder="Profissão" defaultValue="Programador Full Stack" required />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="row">
                                     <div className="form-group col-md-12">
-                                        <div className="resume div-control">
+                                    <div className="">
+                                        <textarea rows={rows} className="resume form-control" name="resume" placeholder="Resumo" required>
                                             {this.state.curriculum.resume}
+                                        </textarea>
+
                                         </div>
                                     </div>
                                 </div>
 
+
                                 <div className="row">
                                     <div className="form-group col-md-12">
-                                        <div className="div-control">
-                                            {this.state.curriculum.title}
+                                        <div className="">
+                                            <input className="form-control" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} required />
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group col-md-6">
+                                        <div className="">
+                                            <input className="form-control" type="text" name="email" placeholder="Email" defaultValue={this.state.curriculum.email} required />
+                                        </div>
+                                    </div>
+                                    <div className="form-group col-md-3">
+                                        <div className="">
+                                            <input className="form-control" type="tel" name="telephone" placeholder="Telefone" defaultValue={this.state.curriculum.telephone} required />
+                                        </div>
+                                    </div>
+                                    <div className="form-group col-md-3">
+                                        <div className="">
+                                            <input className="form-control" type="tel" name="cellphone" placeholder="Celular" defaultValue={this.state.curriculum.cellphone} required />
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div className="row">
+                                    <div className="form-group col-md-12">
+                                        <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
+                                        <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
+                    
+                    </form>
                 </div>
             </div>
         );
