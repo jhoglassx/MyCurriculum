@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 
@@ -120,59 +121,56 @@ export class Curriculum extends Component {
                             </div>
                             <div className="div-group address">
                                 <h1>Endereço</h1>
-                                <div className="row">
-                                    <div className="col-md-12 cidade div-control">
-                                        <span>Betim/MG</span>
+                                {this.state.curriculum.addresses.map(a =>//{s.skillNivel}
+                                    <div className="row" key={a.id}>
+                                        <div className="col-md-12 cidade div-control">
+                                            <span>{a.district} / {a.city}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
+                                
                             </div>
                             <div className="div-group educations">
                                 <h1>Formação</h1>
-                                <div className="row">
-                                    <div className="col-md-12 course div-control">
-                                        <span>Analise e Desenvolvimento de Sistemas</span>
+                                {this.state.curriculum.academicEducations.map(e =>//{s.skillNivel}
+                                    <div className="row" key={e.id}>
+                                        <div className="col-md-12 course div-control">
+                                            <span>{e.course}</span>
+                                        </div>
+                                        <div className="col-md-12 institution div-control">
+                                            <span>{e.institution}</span>
+                                        </div>
+                                        <div className="col-md-12 date div-control">
+                                            <span>{format(new Date(e.dateIntial), 'MM/yyyy') + " ate " + format(new Date(e.dateConclusion), 'MM/yyyy')}</span>
+                                        </div>
                                     </div>
-                                    <div className="col-md-12 institution div-control">
-                                        <span>Faculdade Estacio</span>
-                                    </div>
-                                    <div className="col-md-12 institution div-control">
-                                        <span>06/2019 ate 06/2022</span>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                             <div className="div-group skills">
                                 <h1>Habilidades</h1>
-                                <div className="row skill">
-                                    <div className="col-md-5 title div-control text-center">
-                                        <span>C#</span>
+                                {this.state.curriculum.skills.map(s =>
+                                    <div className="row skill" key={s.id}>
+                                        <div className="col-md-5 title div-control text-center">
+                                            <span>{s.title}</span>
+                                        </div>
+                                        <div className="col-md-4 time div-control text-center">
+                                            <span>{s.skillTime}</span>
+                                        </div>
+                                        <div className="col-md-3 nivel div-control text-center">
+                                            <span>{s.skillNivel}</span>
+                                        </div>
                                     </div>
-                                    <div className="col-md-4 time div-control text-center">
-                                        <span>12 Meses</span>
-                                    </div>
-                                    <div className="col-md-3 nivel div-control text-center">
-                                        <span>Junior</span>
-                                    </div>
-                                </div>
-                                <div className="row skill">
-                                    <div className="col-md-5 title div-control text-center">
-                                        <span>SQL</span>
-                                    </div>
-                                    <div className="col-md-4 time div-control text-center">
-                                        <span>2 anos</span>
-                                    </div>
-                                    <div className="col-md-3 nivel div-control text-center">
-                                        <span>Pleno</span>
-                                    </div>
-                                </div>
+                                )}
                             </div>
 
                         </div>
                         <div className="curriculum_right col-md-9">
                             <div className="row">
                                 <div className="col-md-12 name div-control text-center">
-                                    <span>Jhoglas Shopsigner Xavier Rocha</span>
+                                    <span>jhoglas</span>
                                 </div>
                             </div>
+
                             <div className="row">
                                 <div className="col-md-12 profession div-control text-left">
                                     Programador Full Stack
@@ -186,33 +184,35 @@ export class Curriculum extends Component {
                             </div>
 
                             <div className="div-group">
-                                <div className="experience">
-                                    <div className="row experience_top">
-                                        <div className="occupation col-md-7">
-                                            <span>Programador C# .net Fullstack</span>
+                                {this.state.curriculum.experiences.map(e =>
+                                    <div className="experience" key={e.id}>
+                                        <div className="row experience_top">
+                                            <div className="occupation col-md-7">
+                                                <span>{e.occupation}</span>
+                                            </div>
+
+                                            <div className="date_hiring col-md-2 text-right">
+                                                <span>{format(new Date(e.dateHiring), 'MM/yyyy')}</span>
+                                            </div>
+                                            <div className="col-md-1 text-center">
+                                                <span>ate</span>
+                                            </div>
+                                            <div className="date_resignation col-md-2">
+                                                <span>{e.dateResignation != null ? format(new Date(e.dateResignation), 'MM/yyyy'): "Atualmente" }</span>
+                                            </div>
                                         </div>
-                                    
-                                        <div className="date_hiring col-md-2 text-right">
-                                            <span>04/2021</span>
+                                        <div className="row">
+                                            <div className="company col-md-12">
+                                                <span>{e.company}</span>
+                                            </div>
                                         </div>
-                                        <div className="col-md-1 text-center">
-                                            <span>ate</span>
-                                        </div>
-                                        <div className="date_resignation col-md-2">
-                                            <span>Atualmente</span>
+                                        <div className="row">
+                                            <div className="description div-control">
+                                                <span>{e.description}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="company col-md-12">
-                                            <span>Elfa Engenharia e Sistemas</span>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="description div-control">
-                                            <span>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

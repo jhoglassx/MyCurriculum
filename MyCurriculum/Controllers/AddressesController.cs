@@ -32,7 +32,8 @@ namespace MyCurriculum.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Address>> GetAddress(int id)
         {
-            var address = await _context.Addresses.FindAsync(id);
+            var address = await _context.Addresses.Include(a => a.Curriculum).SingleOrDefaultAsync(ad => ad.Id == id);
+
             if (address == null)
             {
                 return NotFound();
