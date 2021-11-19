@@ -21,9 +21,6 @@ export class Curriculum extends Component {
         super(props);
         this.state = { title: "", curriculum: new CurriculumModel(), loading: true };
         this.initialize();
-
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleSave = this.handleSave.bind(this);
     }
 
     printDocument() {
@@ -52,27 +49,6 @@ export class Curriculum extends Component {
         else
         {
             this.state = { title: "Create", curriculum: new CurriculumModel(), loading: false };
-        }
-    }
-
-    handleCancel(event) {
-        event.preventDefault();
-        this.props.history.push("/Curriculum")
-    }
-
-    handleSave(event) {
-        event.preventDefault();
-
-        const data = new FormData(event.target);
-
-        if (this.state.curriculum.id > 0) {
-            const response1 = fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
-            this.props.history.push("/Curriculum");
-        }
-        else
-        {
-            const response2 = fetch('api/Curriculums/', { method: "POST", body: data });
-            this.props.history.push("/Curriculum");
         }
     }
 

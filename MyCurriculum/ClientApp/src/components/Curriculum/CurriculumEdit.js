@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+
 import { Link } from 'react-router-dom';
 
 
@@ -25,20 +24,6 @@ export class CurriculumEdit extends Component {
         this.handleSave = this.handleSave.bind(this);
     }
 
-    printDocument() {
-        const input = document.getElementById('divToPrint');
-        html2canvas(input)
-            .then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-                pdf.addImage(imgData, 'JPEG', 0, 0);
-                // pdf.output('dataurlnewwindow');
-                pdf.save("download.pdf");
-            })
-            ;
-    }
-
-
     async initialize() {
         
         var id = this.props.match.params["id"];
@@ -56,7 +41,7 @@ export class CurriculumEdit extends Component {
 
     handleCancel(event) {
         event.preventDefault();
-        this.props.history.push("/Curriculum")
+        this.props.history.push("/CurriculumEdit")
     }
 
     handleSave(event) {
@@ -66,19 +51,19 @@ export class CurriculumEdit extends Component {
 
         if (this.state.curriculum.id > 0) {
             const response1 = fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
-            this.props.history.push("/Curriculum");
+            this.props.history.push("/CurriculumEdit");
         }
         else
         {
             const response2 = fetch('api/Curriculums/', { method: "POST", body: data });
-            this.props.history.push("/Curriculum");
+            this.props.history.push("/CurriculumEdit");
         }
     }
 
     render() {
         let contents = this.state.loading
             ? <p><em> Carregando... </em></p>
-            : this.renderCurriculum();
+            : this.renderEditCurriculum();
         return (
             <div>
                 <h1>{this.state.title}</h1>
@@ -88,7 +73,7 @@ export class CurriculumEdit extends Component {
         );
     }
 
-    renderCurriculum() {
+    renderEditCurriculum() {
         const textArea = document.querySelector('textarea');
         const textRowCount = textArea ? textArea.value.substring(100).length : 0;
         const rows = textRowCount + 1;
@@ -165,9 +150,6 @@ export class CurriculumEdit extends Component {
                                 </div>
                             </div>
                         </div>
-
-
-                    
                     </form>
                 </div>
             </div>
