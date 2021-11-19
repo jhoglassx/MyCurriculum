@@ -46,11 +46,7 @@ export class Curriculum extends Component {
             const response = await fetch('api/Curriculums/' + id);
             const curriculum = await response.json();
 
-            const response2 = await fetch('api/Addresses/' + id);
-            const address = await response2.json();
-
-
-            this.setState({ title: "Edit", curriculum: curriculum, address: address, loading: false });
+            this.setState({ title: "Edit", curriculum: curriculum, loading: false });
         }
         else
         {
@@ -101,67 +97,125 @@ export class Curriculum extends Component {
                 </div>
             
                 <div id="divToPrint" className="curriculum">
-                        <input type="hidden" name="id" value={this.state.curriculum.id} />
-                        <div className="row">
-                            <div className="curriculum_left col-md-3">
-                                <div className="photograph">
-                                    <img src="https://thumbs.dreamstime.com/z/3-4-mannequin-gradient-9422208.jpg" />
-                                </div>
-                                <div className="contacts">
-                                    <h1>Contatos</h1>
-                                    <div className="row">
-                                        <div className="form-group col-md-12">
-                                            <div className="div-control">
-                                            <i class="bi bi-envelope-fill"></i>{this.state.curriculum.email}
-                                            <i class="bi bi-envelope-fill"></i>{this.state.address.zipcode}
-                                            </div>
-                                        </div>
-                                        <div className="form-group col-md-12">
-                                            <div className="div-control">
-                                                <i class="bi bi-telephone-fill"></i>{this.state.curriculum.telephone}
-                                            </div>
-                                        </div>
-                                        <div className="form-group col-md-12">
-                                            <div className="div-control">
-                                                <i class="bi bi-telephone-fill"></i>{this.state.curriculum.cellphone}
-                                            </div>
-                                        </div>
+                    <input type="hidden" name="id" value={this.state.curriculum.id} />
+                    <div className="row">
+                        <div className="curriculum_left col-md-3">
+                            <div className="photograph">
+                                <img src="https://thumbs.dreamstime.com/z/3-4-mannequin-gradient-9422208.jpg" />
+                            </div>
+                            <div className="div-group contacts">
+                                <h1>Contatos</h1>
+                                <div className="row">
+                                    <div className="col-md-12 email div-control">
+                                        <i class="bi bi-envelope-fill"></i><span>{this.state.curriculum.email}</span>
+                                    </div>
+                                    <div className="col-md-12 telephone div-control">
+                                        <i class="bi bi-telephone-fill"></i><span>{this.state.curriculum.telephone}</span>
+                                    </div>
+
+                                    <div className="col-md-12 cellphone div-control">
+                                        <i class="bi bi-telephone-fill"></i><span>{this.state.curriculum.cellphone}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="curriculum_right col-md-9">
+                            <div className="div-group address">
+                                <h1>Endereço</h1>
                                 <div className="row">
-                                    <div className="form-group col-md-12">
-                                        <div className="name div-control text-center">
-                                            <span>Jhoglas Shopsigner Xavier Rocha</span>
-                                        </div>
+                                    <div className="col-md-12 cidade div-control">
+                                        <span>Betim/MG</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="div-group educations">
+                                <h1>Formação</h1>
                                 <div className="row">
-                                    <div className="form-group col-md-12 mx-auto">
-                                        <div className="profession div-control text-left">
-                                            Programador Full Stack
-                                        </div>
+                                    <div className="col-md-12 course div-control">
+                                        <span>Analise e Desenvolvimento de Sistemas</span>
+                                    </div>
+                                    <div className="col-md-12 institution div-control">
+                                        <span>Faculdade Estacio</span>
+                                    </div>
+                                    <div className="col-md-12 institution div-control">
+                                        <span>06/2019 ate 06/2022</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="div-group skills">
+                                <h1>Habilidades</h1>
+                                <div className="row skill">
+                                    <div className="col-md-5 title div-control text-center">
+                                        <span>C#</span>
+                                    </div>
+                                    <div className="col-md-4 time div-control text-center">
+                                        <span>12 Meses</span>
+                                    </div>
+                                    <div className="col-md-3 nivel div-control text-center">
+                                        <span>Junior</span>
+                                    </div>
+                                </div>
+                                <div className="row skill">
+                                    <div className="col-md-5 title div-control text-center">
+                                        <span>SQL</span>
+                                    </div>
+                                    <div className="col-md-4 time div-control text-center">
+                                        <span>2 anos</span>
+                                    </div>
+                                    <div className="col-md-3 nivel div-control text-center">
+                                        <span>Pleno</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div className="row">
-                                    <div className="form-group col-md-12">
-                                        <div className="resume div-control">
-                                            {this.state.curriculum.resume}
+                        </div>
+                        <div className="curriculum_right col-md-9">
+                            <div className="row">
+                                <div className="col-md-12 name div-control text-center">
+                                    <span>Jhoglas Shopsigner Xavier Rocha</span>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-12 profession div-control text-left">
+                                    Programador Full Stack
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-12 resume div-control">
+                                    {this.state.curriculum.resume}
+                                </div>
+                            </div>
+
+                            <div className="div-group">
+                                <div className="experience">
+                                    <div className="row experience_top">
+                                        <div className="occupation col-md-7">
+                                            <span>Programador C# .net Fullstack</span>
+                                        </div>
+                                    
+                                        <div className="date_hiring col-md-2 text-right">
+                                            <span>04/2021</span>
+                                        </div>
+                                        <div className="col-md-1 text-center">
+                                            <span>ate</span>
+                                        </div>
+                                        <div className="date_resignation col-md-2">
+                                            <span>Atualmente</span>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="form-group col-md-12">
-                                        <div className="div-control">
-                                            {this.state.curriculum.title}
+                                    <div className="row">
+                                        <div className="company col-md-12">
+                                            <span>Elfa Engenharia e Sistemas</span>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="description div-control">
+                                            <span>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         );

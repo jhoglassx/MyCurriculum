@@ -20,12 +20,10 @@
     background: none;
 }
 
-.curriculum textarea {
-    border: 0px;
-    height: unset;
-    resize: none;
-    overflow-y: hidden;
-}
+    .curriculum div.resume {
+        text-align:justify;
+        margin:20px 0;
+    }
 .curriculum div.name {
     text-transform: capitalize;
     font-size: 32px;
@@ -34,9 +32,10 @@
 .curriculum div.profession {
     background: #808080;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #ffffff;
+    padding:0 4px;
 }
 .curriculum_left {
     background: #13293d;
@@ -49,20 +48,47 @@
 .curriculum_left div.photograph {
     width: 100%;
     overflow: hidden;
-    padding:10px;
+    padding:0px;
 }
 .curriculum_left div.photograph img {
     width: 100%;
 }
 
-.curriculum_left div.contacts {
+.curriculum_left div.div-group {
+    margin-top: 20px;
     color: #f5f5f5;
+    padding-bottom: 10px;
+    border-bottom: 3px double #fff;
 }
 
-.curriculum_left div.contacts h1 {
+.curriculum_left div.div-group div {
+    padding:0px;
+}
+
+.curriculum_left div h1 {
     text-transform:uppercase;
     font-size:18px;
     font-weight:bold;
-    text-align:center;
     color:#1b98e0;
 }
+.curriculum_left div.div-control span {
+    font-size: 12px;
+    color: #f5f5f5;
+}
+.curriculum_right .div-group {
+    margin-top:10px;
+}
+.curriculum_right .experience {
+}
+
+    .curriculum_right .experience .row div {
+        padding: 0;
+    }
+    .curriculum_right .experience div.experience_top {
+        background: #9c9999;
+        padding: 2px 4px;
+        font-weight: bold;
+    }
+    .curriculum_right .experience div.company {
+        font-weight:bold;
+    }
