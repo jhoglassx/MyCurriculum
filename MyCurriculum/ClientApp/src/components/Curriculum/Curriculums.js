@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+
 //import './components/Curriculum/Curriculum.css'
 
 export class Curriculums extends Component {
@@ -51,7 +51,7 @@ export class Curriculums extends Component {
                 </thead>
                 <tbody>
                     {curriculums.map(c =>
-                        <tr key={c.i}>
+                        <tr key={c.id}>
                             <td>{c.id}</td>
                             <td>{c.email}</td>
                             <td>

@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
-
-import { Link } from 'react-router-dom';
-
+import { CurriculumExperience } from '../Curriculum/CurriculumExperience';
+import { ExperienceModel } from '../Curriculum/CurriculumExperience';
 
 export class CurriculumModel {
     constructor() {
@@ -11,6 +10,7 @@ export class CurriculumModel {
         this.telephone = "";
         this.cellphone = "";
         this.resume = "";
+        this.experiences = [new ExperienceModel()];
     }
 }
 
@@ -22,6 +22,7 @@ export class CurriculumEdit extends Component {
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleAddExperience = this.handleAddExperience.bind(this);
     }
 
     async initialize() {
@@ -50,15 +51,29 @@ export class CurriculumEdit extends Component {
         const data = new FormData(event.target);
 
         if (this.state.curriculum.id > 0) {
-            const response1 = fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
+            fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
             this.props.history.push("/CurriculumEdit");
         }
         else
         {
-            const response2 = fetch('api/Curriculums/', { method: "POST", body: data });
+            fetch('api/Curriculums/', { method: "POST", body: data });
             this.props.history.push("/CurriculumEdit");
         }
     }
+
+    handleAddExperience (event) {
+        event.preventDefault();
+
+        var experiences = this.state.curriculum.experiences;
+
+        experiences.push(new ExperienceModel({
+            id : '',
+        }));
+
+        this.setState({
+            experiences: experiences
+        });
+    };
 
     render() {
         let contents = this.state.loading
@@ -74,85 +89,108 @@ export class CurriculumEdit extends Component {
     }
 
     renderEditCurriculum() {
-        const textArea = document.querySelector('textarea');
-        const textRowCount = textArea ? textArea.value.substring(100).length : 0;
-        const rows = textRowCount + 1;
+        const CurriculumExp = new CurriculumExperience();
+        const CurriculumExperience_content = this.state.curriculum.experiences.map(r => <CurriculumExp.render experience={r} />);
         return (
-            <div>
-                <div className="mb5">
-                    <button onClick={this.printDocument}>Print</button>
-                </div>
-            
-                <div id="divToPrint" className="curriculum">
-                    <form onSubmit={this.handleSave}>
-                        <input type="hidden" name="id" value={this.state.curriculum.id} />
+            <form onSubmit={this.handleSave}>
+                <input type="hidden" name="id" value={this.state.curriculum.id} />
+                <div className="row curriculumEdit">
+                    <div className="col-md-12 dados">
                         <div className="row">
-                            <div className="curriculum_left col-md-3">
-                            </div>
-                            <div className="curriculum_right col-md-9">
-                                <div className="row">
-                                    <div className="form-group col-md-12">
-                                        <div className="name form-control text-center">
-                                            Jhoglas Shopsigner Xavier Rocha
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="form-group col-md-12 mx-auto">
-                                        <div className="">
-                                            <input className="profession form-control text-left" type="text" name="profession" placeholder="Profissão" defaultValue="Programador Full Stack" required />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="form-group col-md-12">
-                                    <div className="">
-                                        <textarea rows={rows} className="resume form-control" name="resume" placeholder="Resumo" required>
-                                            {this.state.curriculum.resume}
-                                        </textarea>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="form-group col-md-12">
-                                        <div className="">
-                                            <input className="form-control" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} required />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="form-group col-md-6">
-                                        <div className="">
-                                            <input className="form-control" type="text" name="email" placeholder="Email" defaultValue={this.state.curriculum.email} required />
-                                        </div>
-                                    </div>
-                                    <div className="form-group col-md-3">
-                                        <div className="">
-                                            <input className="form-control" type="tel" name="telephone" placeholder="Telefone" defaultValue={this.state.curriculum.telephone} required />
-                                        </div>
-                                    </div>
-                                    <div className="form-group col-md-3">
-                                        <div className="">
-                                            <input className="form-control" type="tel" name="cellphone" placeholder="Celular" defaultValue={this.state.curriculum.cellphone} required />
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div className="row">
-                                    <div className="form-group col-md-12">
-                                        <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
-                                        <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
-                                    </div>
-                                </div>
+                            <div className="input-group col-md-12">
+                                <input className="form-control name" type="text" name="name" placeholder="Nome" defaultValue={this.state.curriculum.name} required/>
                             </div>
                         </div>
-                    </form>
+                        <div className="row">
+                            <div className="input-group col-md-12">
+                                <input className="form-control profession" type="text" name="profession" placeholder="Profissão" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-group col-md-12">
+                                <textarea className="form-control resume" name="resume" required>
+                                    {this.state.curriculum.resume}
+                                </textarea>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-group col-md-12">
+                                <input className="form-control title" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} required />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-group col-md-6">
+                                <input className="form-control email" type="text" name="email" placeholder="Email" defaultValue={this.state.curriculum.email} required />
+                            </div>
+                            <div className="input-group col-md-3">
+                                <input className="form-control telephone" type="text" name="telephone" placeholder="Telefone" defaultValue={this.state.curriculum.telephone} required />
+                            </div>
+                            <div className="input-group col-md-3">
+                                <input className="form-control cellphone" type="text" name="cellphone" placeholder="Celular" defaultValue={this.state.curriculum.cellphone} required />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-12 address">
+                        <div className="row">
+                            <div className="input-group col-md-2">
+                                <input className="form-control zip-code" type="text" name="zip-code" placeholder="00000-000" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                            <div className="input-group col-md-6">
+                                <input className="form-control road" type="text" name="road" placeholder="rua" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                            <div className="input-group col-md-4">
+                                <input className="form-control district" type="text" name="district" placeholder="bairro" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-group col-md-8">
+                                <input className="form-control city" type="text" name="city" placeholder="Cidade" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                            <div className="input-group col-md-4">
+                                <input className="form-control state" type="text" name="state" placeholder="Estado" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-md-12 address">
+                        <div className="row">
+                            <div className="input-group col-md-2">
+                                <input className="form-control zip-code" type="text" name="zip-code" placeholder="00000-000" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                            <div className="input-group col-md-6">
+                                <input className="form-control road" type="text" name="road" placeholder="rua" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                            <div className="input-group col-md-4">
+                                <input className="form-control district" type="text" name="district" placeholder="bairro" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-group col-md-8">
+                                <input className="form-control city" type="text" name="city" placeholder="Cidade" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                            <div className="input-group col-md-4">
+                                <input className="form-control state" type="text" name="state" placeholder="Estado" defaultValue={this.state.curriculum.name} required />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="col-md-12 experiences">
+                        {CurriculumExperience_content}
+                    </div>
+                    <div className="row">
+                        <div className="form-group col-md-12">
+                            <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                        </div>
+                    </div>
+
+                        <div className="row">
+                            <div className="form-group col-md-12">
+                                <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
+                                <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
+                            </div>
+                        </div>
                 </div>
-            </div>
+            </form>
         );
     }
 }

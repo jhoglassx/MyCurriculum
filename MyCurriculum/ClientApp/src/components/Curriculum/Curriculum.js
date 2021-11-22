@@ -2,8 +2,6 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
-
 
 export class CurriculumModel {
     constructor() {
@@ -64,9 +62,6 @@ export class Curriculum extends Component {
     }
 
     renderCurriculum() {
-        const textArea = document.querySelector('textarea');
-        const textRowCount = textArea ? textArea.value.substring(100).length : 0;
-        const rows = textRowCount + 1;
         return (
             <div>
                 <div className="mb5">
@@ -78,7 +73,7 @@ export class Curriculum extends Component {
                     <div className="row">
                         <div className="curriculum_left col-md-3">
                             <div className="photograph">
-                                <img src="https://thumbs.dreamstime.com/z/3-4-mannequin-gradient-9422208.jpg" />
+                                <img alt="imagem" type="imagem" src="https://thumbs.dreamstime.com/z/3-4-mannequin-gradient-9422208.jpg" />
                             </div>
                             <div className="div-group contacts">
                                 <h1>Contatos</h1>
