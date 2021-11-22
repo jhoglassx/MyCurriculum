@@ -7,6 +7,7 @@ import { Counter } from './components/Counter';
 import { Curriculums } from './components/Curriculum/Curriculums';
 import { Curriculum } from './components/Curriculum/Curriculum';
 import { CurriculumEdit } from './components/Curriculum/CurriculumEdit';
+import { CurriculumExperience } from './components/Curriculum/CurriculumExperience';
 import './custom.css';
 import './components/Curriculum/Curriculum.css';
 import './components/Curriculum/CurriculumEdit.css';
@@ -23,6 +24,7 @@ export default class App extends Component {
                 <Route path='/curriculos' component={Curriculums} />
                 <Route path='/c/:id/:name' component={Curriculum} />
                 <Route path='/curriculo/edit/:id' component={CurriculumEdit} />
+                <Route path='/curriculo/exp/:id' component={CurriculumExperience} />
                 
             </Layout>
         );

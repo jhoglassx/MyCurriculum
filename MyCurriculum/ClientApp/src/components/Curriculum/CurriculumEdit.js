@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
 import { CurriculumExperience } from '../Curriculum/CurriculumExperience';
-import { ExperienceModel } from '../Curriculum/CurriculumExperience';
 
 export class CurriculumModel {
     constructor() {
@@ -10,7 +9,6 @@ export class CurriculumModel {
         this.telephone = "";
         this.cellphone = "";
         this.resume = "";
-        this.experiences = [new ExperienceModel()];
     }
 }
 
@@ -22,7 +20,7 @@ export class CurriculumEdit extends Component {
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        this.handleAddExperience = this.handleAddExperience.bind(this);
+        /*this.handleAddExperience = this.handleAddExperience.bind(this);*/
     }
 
     async initialize() {
@@ -61,20 +59,6 @@ export class CurriculumEdit extends Component {
         }
     }
 
-    handleAddExperience (event) {
-        event.preventDefault();
-
-        var experiences = this.state.curriculum.experiences;
-
-        experiences.push(new ExperienceModel({
-            id : '',
-        }));
-
-        this.setState({
-            experiences: experiences
-        });
-    };
-
     render() {
         let contents = this.state.loading
             ? <p><em> Carregando... </em></p>
@@ -89,8 +73,8 @@ export class CurriculumEdit extends Component {
     }
 
     renderEditCurriculum() {
-        const CurriculumExp = new CurriculumExperience();
-        const CurriculumExperience_content = this.state.curriculum.experiences.map(r => <CurriculumExp.render experience={r} />);
+        const CurriculumExp = new CurriculumExperience({ cid: this.state.curriculum.id, eid: this.state.curriculum.experiences[0].id });
+        
         return (
             <form onSubmit={this.handleSave}>
                 <input type="hidden" name="id" value={this.state.curriculum.id} />
@@ -173,15 +157,15 @@ export class CurriculumEdit extends Component {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div className="col-md-12 experiences">
-                        {CurriculumExperience_content}
+                        {/*{CurriculumExperience_content}*/}
                     </div>
-                    <div className="row">
-                        <div className="form-group col-md-12">
-                            <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
-                        </div>
-                    </div>
+                    {/*<div className="row">*/}
+                    {/*    <div className="form-group col-md-12">*/}
+                    {/*        <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                         <div className="row">
                             <div className="form-group col-md-12">
