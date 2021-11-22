@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { CurriculumExperience } from '../Curriculum/CurriculumExperience';
+/*import { CurriculumExperience } from '../Curriculum/CurriculumExperience';*/
 
 export class CurriculumModel {
     constructor() {
@@ -28,7 +28,7 @@ export class CurriculumEdit extends Component {
         var id = this.props.match.params["id"];
         
         if (id > 0) {
-            const response = await fetch('api/Curriculums/' + id);
+            const response = await fetch('api/Experiences/' + id);
             const data = await response.json();
             this.setState({ title: "Edit", curriculum: data, loading: false });
         }
@@ -73,7 +73,7 @@ export class CurriculumEdit extends Component {
     }
 
     renderEditCurriculum() {
-        const CurriculumExp = new CurriculumExperience({ cid: this.state.curriculum.id, eid: this.state.curriculum.experiences[0].id });
+        /*const CurriculumExp = new CurriculumExperience({ cid: this.state.curriculum.id, eid: this.state.curriculum.experiences[0].id });*/
         
         return (
             <form onSubmit={this.handleSave}>
