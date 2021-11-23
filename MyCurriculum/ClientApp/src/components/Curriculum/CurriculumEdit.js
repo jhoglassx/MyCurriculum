@@ -28,7 +28,7 @@ export class CurriculumEdit extends Component {
         var id = this.props.match.params["id"];
         
         if (id > 0) {
-            const response = await fetch('api/Experiences/' + id);
+            const response = await fetch('api/Curriculums/' + id);
             const data = await response.json();
             this.setState({ title: "Edit", curriculum: data, loading: false });
         }

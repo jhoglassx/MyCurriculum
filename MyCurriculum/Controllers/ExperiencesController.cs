@@ -34,7 +34,7 @@ namespace MyCurriculum.Controllers
         {
             var experience = await _context.Experiences
                 .Include(e => e.Curriculum)
-                .SingleOrDefaultAsync(e => e.Id == id);
+                .SingleOrDefaultAsync(e => e.Curriculum.Id == id);
 
             if (experience == null)
             {

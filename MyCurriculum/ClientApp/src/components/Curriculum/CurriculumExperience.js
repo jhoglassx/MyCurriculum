@@ -16,39 +16,42 @@ export class CurriculumExperience extends Component {
 
     constructor(props) {
         super(props);
-        this.experience = new ExperienceModel();
+        this.state = { title: "", experience: new ExperienceModel(), loading: true };
         this.initialize();
 
-        this.experiences = [this.experience];
+        this.experiences = [];
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        /*this.handleAddExperience = this.handleAddExperience.bind(this);*/
+        this.handleAddExperience = this.handleAddExperience.bind(this);
         
     }
-
     async initialize(){ 
         var id = this.props.match.params["id"];
         if (id > 0) {
             const response = await fetch('api/Experiences/' + id);
             const data = await response.json();
-            this.setState({experience: data});
+            this.setState({ title: "expEdit", experience: data, loading: false });
+
+            var exp = this.experiences;
+
+            exp.push(data);
+
+            this.setState({ experiences: exp });
         }
         else {
             this.state = { title: "expCreate", experience: new ExperienceModel(), loading: false };
-        }
+        } 
     }
 
     handleAddExperience(event) {
         event.preventDefault();
 
-        var experiences = this.experiences;
+        var exp = this.experiences;
 
-        experiences.push(new ExperienceModel({
-            id: '',
-        }));
+        exp.push(new ExperienceModel());
 
-        this.setState({experiences: experiences});
+        this.setState({experiences: exp});
     };
 
     handleCancel(event) {
@@ -62,17 +65,18 @@ export class CurriculumExperience extends Component {
         const data = new FormData(event.target);
 
         if (this.state.curriculum.id > 0) {
-            fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
+            fetch('api/Experiences/' + this.state.curriculum.id, { method: "PUT", body: data });
             this.props.history.push("/CurriculumEdit");
         }
         else {
-            fetch('api/Curriculums/', { method: "POST", body: data });
+            fetch('api/Experiences/', { method: "POST", body: data });
             this.props.history.push("/CurriculumEdit");
         }
     }
 
     render() {
-        console.log('SearchBar this.state', this.experience);
+        console.log('SearchBar this.state', this.state.experience);
+        console.log('SearchBar this.state', this.experiences);
         return (
             <div>
                 <div className="row">
@@ -80,9 +84,10 @@ export class CurriculumExperience extends Component {
                         <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
                     </div>
                 </div>
+                <form onSubmit={this.handleSave}>
                 {this.experiences.map((experience, index) => (
                     <div key={index} className="experience">
-                        <input type="hidden" name="id" value={experience.curriculumId} />
+                        <input type="hidden" name="id" value={experience.id} />
                         <div className="row">
                             <div className="input-group col-md-12">
                                 <input className="form-control company" type="text" name="company" placeholder="Contratante" defaultValue={experience.company} required />
@@ -108,6 +113,9 @@ export class CurriculumExperience extends Component {
                         </div>
                     </div>
                 ))}
+                    <button type="submit" className="btn btn-success" value={this.experiences}>Salvar</button>
+                </form>
+                
             </div >
             );
     }
