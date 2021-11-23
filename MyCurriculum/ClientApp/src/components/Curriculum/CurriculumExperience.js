@@ -3,7 +3,6 @@
 export class ExperienceModel {
     constructor() {
         this.id =0;
-        this.curriculumId = 0;
         this.dateHiring = "";
         this.dateResignation = "";
         this.company = "";
@@ -16,10 +15,8 @@ export class CurriculumExperience extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { title: "", experience: new ExperienceModel(), loading: true };
+        this.state = { title: "", experiences: [], loading: true };
         this.initialize();
-
-        this.experiences = { experience:[], loading: true };
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -32,9 +29,9 @@ export class CurriculumExperience extends Component {
         const data = await response.json();
         const dataFilter = data.filter(exp => exp?.curriculum.id === 1 );
 
-        this.setState({ title: "expEdit", experience: dataFilter, loading: false });
+        //this.setState({ title: "expEdit", experience: dataFilter, loading: false });
 
-        var exp = this.experiences.experience;
+        var exp = this.state.experiences;
 
         for (var i = 0; i < dataFilter.length; i++) {
             exp.push(dataFilter[i]);
@@ -45,7 +42,7 @@ export class CurriculumExperience extends Component {
     handleAddExperience(event) {
         event.preventDefault();
 
-        var exp = this.experiences.experience;
+        var exp = this.state.experiences;
 
         exp.push(new ExperienceModel());
 
@@ -59,15 +56,15 @@ export class CurriculumExperience extends Component {
 
     handleChange(e, index) {
         const target = e.target;
-        this.experiences.experience[index][target.name] = target.value;
+        this.state.experiences[index][target.name] = target.value;
     }
 
     handleSave(event, index) {
         event.preventDefault();
 
-        for (var i = 0; i < this.experiences.experience.length;i++) {
+        for (var i = 0; i < this.state.experiences.length;i++) {
             
-            const exp = this.experiences.experience[i];
+            const exp = this.state.experiences[i];
             const data = new FormData(event.target);
             if (exp.id > 0) {
                 
@@ -100,7 +97,7 @@ export class CurriculumExperience extends Component {
                     </div>
                 </div>
                 <form onSubmit={this.handleSave}>
-                    {this.experiences.experience.map((experience, index) => (
+                    {this.state.experiences.map((experience, index) => (
                         <div key={index} className="experience">
                             <input type="hidden" name="id" value={experience.id} />
                             <div className="row">
