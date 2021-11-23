@@ -25,16 +25,18 @@ namespace MyCurriculum.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Experience>>> GetExperiences()
         {
-            return await _context.Experiences.ToListAsync();
+            return await _context.Experiences
+                .Include(e => e.Curriculum)
+                .ToListAsync();
         }
 
         // GET: api/Experiences/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Experience>> GetExperience(int id)
         {
-            var experience = await _context.Experiences
+            var experience =  await _context.Experiences
                 .Include(e => e.Curriculum)
-                .SingleOrDefaultAsync(e => e.Curriculum.Id == id);
+                .SingleOrDefaultAsync(c => c.Id == id);
 
             if (experience == null)
             {
