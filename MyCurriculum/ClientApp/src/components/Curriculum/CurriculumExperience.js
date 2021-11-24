@@ -2,7 +2,8 @@
 
 export class ExperienceModel {
     constructor() {
-        this.id =0;
+        this.id = 0;
+        this.curriculumId = 0;
         this.dateHiring = "";
         this.dateResignation = "";
         this.company = "";
@@ -29,13 +30,11 @@ export class CurriculumExperience extends Component {
         const data = await response.json();
         const dataFilter = data.filter(exp => exp?.curriculum.id === 1 );
 
-        //this.setState({ title: "expEdit", experience: dataFilter, loading: false });
-
         var exp = this.state.experiences;
 
         for (var i = 0; i < dataFilter.length; i++) {
             exp.push(dataFilter[i]);
-            this.setState({ experiences: exp, loading: false });
+            this.setState({ experiences:exp , loading: false });
         }
     }
 
@@ -59,30 +58,36 @@ export class CurriculumExperience extends Component {
         this.state.experiences[index][target.name] = target.value;
     }
 
-    handleSave(event, index) {
-        event.preventDefault();
+    handleSave(e, index) {
+        e.preventDefault();
 
         for (var i = 0; i < this.state.experiences.length;i++) {
             
             const exp = this.state.experiences[i];
-            const data = new FormData(event.target);
+
+            const data = JSON.stringify(exp);
+            
             if (exp.id > 0) {
                 
-                fetch('api/Experiences/' + exp.id, { method: "PUT", body: data });
-                //this.props.history.push("/CurriculumEdit");
+                fetch('api/Experiences/' + exp.id, {
+                    method: "PUT",
+                    contentType: 'application/json; charset=UTF-8',
+                    headers: { 'Content-Type': 'application/json' },
+                    dataType: 'json',
+                    body: data
+                })
+                    .then(response => response.json())
+                    .then(data => this.setState({ Id: data.id }));
             }
             else {
-                fetch('api/Experiences/', {
+                fetch('api/Experiences', {
                     method: "POST",
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    credentials: 'same-origin',
+                    headers: {'Content-Type': 'application/json'},
+                    body: data
+                })
+                    .then(response => response.json())
+                    .then(data => this.setState({ Id: data.id }));
 
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(exp)
-                });
             }
         }
         this.props.history.push("/CurriculumEdit");
@@ -100,6 +105,7 @@ export class CurriculumExperience extends Component {
                     {this.state.experiences.map((experience, index) => (
                         <div key={index} className="experience">
                             <input type="hidden" name="id" value={experience.id} />
+                            <input type="hidden" name="curriculumId" value="1" />
                             <div className="row">
                                 <div className="input-group col-md-12">
                                     <input className="form-control company" type="text" name="company" id={index} placeholder="Contratante" defaultValue={experience.company} onChange={(e) => this.handleChange(e, index)} required />

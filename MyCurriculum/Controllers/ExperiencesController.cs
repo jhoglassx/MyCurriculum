@@ -49,7 +49,7 @@ namespace MyCurriculum.Controllers
         // PUT: api/Experiences/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExperience(int id, [FromForm]Experience experience)
+        public async Task<IActionResult> PutExperience(int id, [FromBody]Experience experience)
         {
             if (id != experience.Id)
             {
@@ -80,7 +80,7 @@ namespace MyCurriculum.Controllers
         // POST: api/Experiences
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Experience>> PostExperience([FromForm]Experience experience)
+        public async Task<ActionResult<Experience>> PostExperience([FromBody]Experience experience)
         {
             _context.Experiences.Add(experience);
             await _context.SaveChangesAsync();
