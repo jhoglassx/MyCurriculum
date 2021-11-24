@@ -83,6 +83,8 @@ namespace MyCurriculum.Controllers
         public async Task<ActionResult<Experience>> PostExperience([FromBody]Experience experience)
         {
             _context.Experiences.Add(experience);
+            
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetExperience", new { id = experience.Id }, experience);

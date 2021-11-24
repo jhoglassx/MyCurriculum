@@ -1,9 +1,8 @@
 ﻿import React, { Component } from 'react';
 
 export class ExperienceModel {
-    constructor() {
-        this.id = 0;
-        this.curriculumId = 0;
+    constructor(props) {
+        this.curriculum = props;
         this.dateHiring = "";
         this.dateResignation = "";
         this.company = "";
@@ -28,7 +27,7 @@ export class CurriculumExperience extends Component {
         var id = this.props.match.params["id"];
         const response = await fetch('api/Experiences');
         const data = await response.json();
-        const dataFilter = data.filter(exp => exp?.curriculum.id === 1 );
+        const dataFilter = data.filter(exp => exp?.curriculum.id === 2 );
 
         var exp = this.state.experiences;
 
@@ -43,9 +42,9 @@ export class CurriculumExperience extends Component {
 
         var exp = this.state.experiences;
 
-        exp.push(new ExperienceModel());
+        exp.push(new ExperienceModel(exp[0].curriculum));
 
-        this.setState({experiences: exp});
+        this.setState({ experiences: exp });
     };
 
     handleCancel(event) {
@@ -58,36 +57,33 @@ export class CurriculumExperience extends Component {
         this.state.experiences[index][target.name] = target.value;
     }
 
-    handleSave(e, index) {
+    async handleSave(e, index) {
         e.preventDefault();
 
         for (var i = 0; i < this.state.experiences.length;i++) {
             
             const exp = this.state.experiences[i];
 
-            const data = JSON.stringify(exp);
-            
+
             if (exp.id > 0) {
-                
-                fetch('api/Experiences/' + exp.id, {
+                await fetch('api/Experiences/' + exp.id, {
                     method: "PUT",
                     contentType: 'application/json; charset=UTF-8',
                     headers: { 'Content-Type': 'application/json' },
                     dataType: 'json',
-                    body: data
+                    body: JSON.stringify(exp)
                 })
-                    .then(response => response.json())
+                    .then(result => result.text())
                     .then(data => this.setState({ Id: data.id }));
             }
             else {
-                fetch('api/Experiences', {
+                await fetch('api/Experiences/', {
                     method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    body: data
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(exp)
                 })
-                    .then(response => response.json())
-                    .then(data => this.setState({ Id: data.id }));
-
+                    .then(result => result.text())
+                    .then(data => console.log(data));
             }
         }
         this.props.history.push("/CurriculumEdit");
@@ -105,7 +101,6 @@ export class CurriculumExperience extends Component {
                     {this.state.experiences.map((experience, index) => (
                         <div key={index} className="experience">
                             <input type="hidden" name="id" value={experience.id} />
-                            <input type="hidden" name="curriculumId" value="1" />
                             <div className="row">
                                 <div className="input-group col-md-12">
                                     <input className="form-control company" type="text" name="company" id={index} placeholder="Contratante" defaultValue={experience.company} onChange={(e) => this.handleChange(e, index)} required />
