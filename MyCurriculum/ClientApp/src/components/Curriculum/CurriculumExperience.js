@@ -105,7 +105,6 @@ export class CurriculumExperience extends Component {
     renderExperiencia() {
         return (
             <div>
-                
                 <form onSubmit={this.handleSave}>
                     {this.state.experiences.map((experience, index) => (
                         <div key={index} className="experience">
@@ -145,6 +144,6 @@ export class CurriculumExperience extends Component {
                 </form>
                 
             </div >
-            );
+        );
     }
 }

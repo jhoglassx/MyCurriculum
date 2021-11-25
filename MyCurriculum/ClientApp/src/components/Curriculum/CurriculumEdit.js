@@ -49,12 +49,12 @@ export class CurriculumEdit extends Component {
 
         if (this.state.curriculum.id > 0) {
             fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
-            this.props.history.push("/CurriculumEdit");
+            this.props.history.push("/curriculo/exp/" + this.state.curriculum.id);
         }
         else
         {
             fetch('api/Curriculums/', { method: "POST", body: data });
-            this.props.history.push("/CurriculumEdit");
+            this.props.history.push("/curriculo/exp/" + this.state.curriculum.id);
         }
     }
 
@@ -72,11 +72,8 @@ export class CurriculumEdit extends Component {
     }
 
     renderEditCurriculum() {
-        const CurriculumExperience_content = new CurriculumExperience(this.state.curriculum.id);
         return (
-           
-            
-            <div className="row curriculumEdit">
+            <div>
                 <form onSubmit={this.handleSave}>
                 <input type="hidden" name="id" value={this.state.curriculum.id} />
                     <div className="col-md-12 dados">
@@ -135,37 +132,14 @@ export class CurriculumEdit extends Component {
                             </div>
                         </div>
                     </div>
-
-                    <div className="col-md-12 address">
-                        <div className="row">
-                            <div className="input-group col-md-2">
-                                <input className="form-control zip-code" type="text" name="zip-code" placeholder="00000-000" defaultValue={this.state.curriculum.name} required />
-                            </div>
-                            <div className="input-group col-md-6">
-                                <input className="form-control road" type="text" name="road" placeholder="rua" defaultValue={this.state.curriculum.name} required />
-                            </div>
-                            <div className="input-group col-md-4">
-                                <input className="form-control district" type="text" name="district" placeholder="bairro" defaultValue={this.state.curriculum.name} required />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-group col-md-8">
-                                <input className="form-control city" type="text" name="city" placeholder="Cidade" defaultValue={this.state.curriculum.name} required />
-                            </div>
-                            <div className="input-group col-md-4">
-                                <input className="form-control state" type="text" name="state" placeholder="Estado" defaultValue={this.state.curriculum.name} required />
-                            </div>
-                        </div>
-                    </div>
                     <div className="row">
                         <div className="form-group col-md-12">
-                            <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
+                            <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Avançar</button>
                             <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
                         </div>
                     </div>
                 </form>
-                </div>
-                
+            </div>
         );
     }
 }
