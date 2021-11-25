@@ -2,7 +2,7 @@
 
 export class ExperienceModel {
     constructor(props) {
-        this.curriculum = props;
+        this.curriculumId = props;
         this.dateHiring = "";
         this.dateResignation = "";
         this.company = "";
@@ -16,18 +16,19 @@ export class CurriculumExperience extends Component {
     constructor(props) {
         super(props);
         this.state = { title: "", experiences: [], loading: true };
-        this.initialize();
+        this.load();
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleAddExperience = this.handleAddExperience.bind(this);
         
     }
-    async initialize() {
+    async load() {
         var id = this.props.match.params["id"];
         const response = await fetch('api/Experiences');
+
         const data = await response.json();
-        const dataFilter = data.filter(exp => exp?.curriculum.id === 2 );
+        const dataFilter = data.filter(exp => exp?.curriculumId == id );
 
         var exp = this.state.experiences;
 
@@ -42,7 +43,7 @@ export class CurriculumExperience extends Component {
 
         var exp = this.state.experiences;
 
-        exp.push(new ExperienceModel(exp[0].curriculum));
+        exp.push(new ExperienceModel(exp[0].curriculumId));
 
         this.setState({ experiences: exp });
     };
@@ -90,13 +91,21 @@ export class CurriculumExperience extends Component {
     }
 
     render() {
+        let contents = this.state.loading
+            ? <p><em> Carregando... </em></p>
+            : this.renderExperiencia();
         return (
             <div>
-                <div className="row">
-                    <div className="form-group col-md-12">
-                        <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
-                    </div>
-                </div>
+                {contents}
+            </div>
+        );
+    }
+
+
+    renderExperiencia() {
+        return (
+            <div>
+                
                 <form onSubmit={this.handleSave}>
                     {this.state.experiences.map((experience, index) => (
                         <div key={index} className="experience">
@@ -126,7 +135,13 @@ export class CurriculumExperience extends Component {
                             </div>
                         </div>
                     ))}
-                    <button type="submit" className="btn btn-success" value={this.experiences}>Salvar</button>
+                    
+                    <div className="row">
+                        <div className="form-group col-md-12">
+                            <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
+                            <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                        </div>
+                    </div>
                 </form>
                 
             </div >

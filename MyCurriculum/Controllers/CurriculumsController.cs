@@ -32,14 +32,7 @@ namespace MyCurriculum.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Curriculum>> GetCurriculum(int id)
         {
-            var curriculum = await _context.Curriculums
-                .Include(c => c.Account)
-                .Include(c => c.Addresses)
-                .Include(c => c.AcademicEducations)
-                .Include(c => c.Skills)
-                .Include(c => c.Courses)
-                .Include(c => c.Experiences)
-                .SingleOrDefaultAsync(ad => ad.Id == id);
+            var curriculum = await _context.Curriculums.FindAsync(id);
 
             if (curriculum == null)
             {

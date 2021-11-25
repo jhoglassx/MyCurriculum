@@ -20,35 +20,7 @@ namespace MyCurriculum.DataContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Curriculum>(entity =>
-            {
-                entity.HasMany(c => c.Experiences).WithOne(e => e.Curriculum);
-                entity.HasMany(c => c.Addresses).WithOne(e => e.Curriculum);
-                entity.HasMany(c => c.Courses).WithOne(e => e.Curriculum);
-                entity.HasMany(c => c.AcademicEducations).WithOne(e => e.Curriculum);
-                entity.HasMany(c => c.Skills).WithOne(e => e.Curriculum);
-            });
 
-
-            modelBuilder.Entity<AcademicEducation>(entity =>
-            {
-                entity.HasOne(a => a.Curriculum).WithMany(c => c.AcademicEducations);
-            });
-
-            modelBuilder.Entity<Address>(entity =>
-            {
-                entity.HasOne(a => a.Curriculum).WithMany(c => c.Addresses);
-            });
-
-            modelBuilder.Entity<Experience>(entity =>
-            {
-                entity.HasOne(a => a.Curriculum).WithMany(c => c.Experiences);
-            });
-
-            modelBuilder.Entity<Skill>(entity =>
-            {
-                entity.HasOne(a => a.Curriculum).WithMany(c => c.Skills);
-            });
         }
     }
 }

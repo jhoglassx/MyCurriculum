@@ -6,9 +6,9 @@ namespace MyCurriculum.Models
 {
     public class Experience
     {
-        [Key,Required]
+        [Key]
         public int Id { get; set; }
-        public Curriculum Curriculum { get; set; }
+        public int CurriculumId { get; set; }
         public DateTime DateHiring { get; set; }//data de contratação
         public DateTime DateResignation { get; set; }//data de demissão
         public string Company { get; set; }//Empresa

@@ -8,14 +8,10 @@ namespace MyCurriculum.Models
 {
     public class Address
     {
-        public Address()
-        {
-            Curriculum = Curriculum;
-        }
-
+        
         [Key]
         public int Id { get; set; }
-        public virtual Curriculum Curriculum { get; set; }
+        public int CurriculumId { get; set; }
         public int ZipCode { get; set; }
         public string Road { get; set; }
         public string District { get; set; }

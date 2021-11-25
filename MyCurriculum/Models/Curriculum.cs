@@ -9,7 +9,7 @@ namespace MyCurriculum.Models
     {
         [Key]
         public int Id { get; set; }
-        public virtual Account Account { get; set; }
+        public int AccountId { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
         public int Telephone { get; set; }
@@ -18,10 +18,10 @@ namespace MyCurriculum.Models
         public DateTime Created_at { get; set; }
         public DateTime Updated_at { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
-        public virtual ICollection<Experience> Experiences { get; set; }
-        public virtual ICollection<AcademicEducation> AcademicEducations { get; set; }
-        public virtual ICollection<Course> Courses { get; set; }
-        public virtual ICollection<Skill> Skills { get; set; }
+        public ICollection<Address> Addresses { get; set; }
+        public ICollection<Experience> Experiences { get; set; }
+        public ICollection<AcademicEducation> AcademicEducations { get; set; }
+        public ICollection<Course> Courses { get; set; }
+        public ICollection<Skill> Skills { get; set; }
     }
 }

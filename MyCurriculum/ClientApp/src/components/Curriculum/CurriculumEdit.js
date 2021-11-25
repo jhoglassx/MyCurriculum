@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-/*import { CurriculumExperience } from '../Curriculum/CurriculumExperience';*/
+import { CurriculumExperience } from '../Curriculum/CurriculumExperience';
 
 export class CurriculumModel {
     constructor() {
@@ -20,7 +20,6 @@ export class CurriculumEdit extends Component {
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        /*this.handleAddExperience = this.handleAddExperience.bind(this);*/
     }
 
     async initialize() {
@@ -73,12 +72,13 @@ export class CurriculumEdit extends Component {
     }
 
     renderEditCurriculum() {
-        /*const CurriculumExp = new CurriculumExperience({ cid: this.state.curriculum.id, eid: this.state.curriculum.experiences[0].id });*/
-        
+        const CurriculumExperience_content = new CurriculumExperience(this.state.curriculum.id);
         return (
-            <form onSubmit={this.handleSave}>
+           
+            
+            <div className="row curriculumEdit">
+                <form onSubmit={this.handleSave}>
                 <input type="hidden" name="id" value={this.state.curriculum.id} />
-                <div className="row curriculumEdit">
                     <div className="col-md-12 dados">
                         <div className="row">
                             <div className="input-group col-md-12">
@@ -157,24 +157,15 @@ export class CurriculumEdit extends Component {
                             </div>
                         </div>
                     </div>
-
-                    <div className="col-md-12 experiences">
-                        {/*{CurriculumExperience_content}*/}
-                    </div>
-                    {/*<div className="row">*/}
-                    {/*    <div className="form-group col-md-12">*/}
-                    {/*        <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
-                        <div className="row">
-                            <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
-                                <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
-                            </div>
+                    <div className="row">
+                        <div className="form-group col-md-12">
+                            <button type="submit" className="btn btn-success" value={this.state.curriculum.id}>Salvar</button>
+                            <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
                         </div>
+                    </div>
+                </form>
                 </div>
-            </form>
+                
         );
     }
 }
