@@ -45,7 +45,7 @@ namespace MyCurriculum.Controllers
         // PUT: api/Addresses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(int id,[FromForm] Address address)
+        public async Task<IActionResult> PutAddress(int id,[FromBody] Address address)
         {
             if (id != address.Id)
             {
@@ -76,7 +76,7 @@ namespace MyCurriculum.Controllers
         // POST: api/Addresses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress([FromForm] Address address)
+        public async Task<ActionResult<Address>> PostAddress([FromBody] Address address)
         {
             _context.Addresses.Add(address);
             await _context.SaveChangesAsync();

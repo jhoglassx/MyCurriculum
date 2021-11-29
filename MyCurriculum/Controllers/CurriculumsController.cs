@@ -45,7 +45,7 @@ namespace MyCurriculum.Controllers
         // PUT: api/Curriculums/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCurriculum(int id, [FromForm]Curriculum curriculum)
+        public async Task<IActionResult> PutCurriculum(int id, [FromBody]Curriculum curriculum)
         {
             if (id != curriculum.Id)
             {
@@ -76,7 +76,7 @@ namespace MyCurriculum.Controllers
         // POST: api/Curriculums
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Curriculum>> PostCurriculum([FromForm]Curriculum curriculum)
+        public async Task<ActionResult<Curriculum>> PostCurriculum([FromBody] Curriculum curriculum)
         {
             _context.Curriculums.Add(curriculum);
             await _context.SaveChangesAsync();
