@@ -12,14 +12,32 @@ export class CurriculumModel {
     }
 }
 
+export class AdressModel {
+    constructor() {
+        this.id = 0;
+        this.curriculumId = 0;
+        this.zipCode = "";
+        this.road = "";
+        this.district = "";
+        this.city = "";
+        this.state = "";
+    }
+}
+
 export class CurriculumEdit extends Component {
     constructor(props) {
         super(props);
-        this.state = { title: "", curriculum: new CurriculumModel(), loading: true };
+        this.state = {
+            title: "",
+            curriculum: new CurriculumModel(),
+            adress: new AdressModel(),
+            loading: true
+        };
         this.initialize();
+        this.loadAdress();
 
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleSave = this.handleSave.bind(this);
+       this.handleCancel = this.handleCancel.bind(this);
+        this.handleSave = this.handleSaveCurriculum.bind(this);
     }
 
     async initialize() {
@@ -33,7 +51,22 @@ export class CurriculumEdit extends Component {
         }
         else
         {
-            this.state = { title: "Create", curriculum: new CurriculumModel(), loading: false };
+            this.state = { title: "Create", curriculum: new CurriculumModel(), adress: new AdressModel(), loading: false };
+        }
+    }
+
+    async loadAdress() {
+        var id = this.props.match.params["id"];
+        const response = await fetch('api/Addresses');
+
+        const data = await response.json();
+        const dataFilter = data.filter(adress => adress?.curriculumId == id);
+
+        var adress = this.state.adress;
+
+        for (var i = 0; i < dataFilter.length; i++) {
+            adress.push(dataFilter[i]);
+            this.setState({ adress: adress, loading: false });
         }
     }
 
@@ -42,24 +75,73 @@ export class CurriculumEdit extends Component {
         this.props.history.push("/CurriculumEdit")
     }
 
-    handleSave(event) {
+    async handleSaveCurriculum(event) {
         event.preventDefault();
 
-        const data = new FormData(event.target);
+        const cur = this.state.curriculum;
 
-        if (this.state.curriculum.id > 0) {
-            fetch('api/Curriculums/' + this.state.curriculum.id, { method: "PUT", body: data });
-            this.props.history.push("/curriculo/exp/" + this.state.curriculum.id);
+        if (this.state.curriculum.id > 0) 
+        {
+            await fetch('api/Curriculums/' + this.state.curriculum.id, {
+                method: "PUT",
+                contentType: 'application/json; charset=UTF-8',
+                headers: { 'Content-Type': 'application/json' },
+                dataType: 'json',
+                body: JSON.stringify(cur)
+            })
+                .then(result => result.text())
+                .then(data => this.setState({ Id: data.id }));
         }
         else
         {
-            fetch('api/Curriculums/', { method: "POST", body: data });
-            this.props.history.push("/curriculo/exp/" + this.state.curriculum.id);
+            await fetch('api/Curriculums/', {
+                method: "POST",
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify(cur)
+            })
+                .then(result => result.text())
+                .then(data => console.log(data));
+        }
+        this.handleSaveAdress(this.data)
+    }
+
+    async handleSaveAdress(curId) {
+        const adress = this.state.adress[{ curriculumId: curId }];
+
+        if (this.state.curriculum.id > 0) {
+            await fetch('api/Addresses/' + this.state.adress.id, {
+                method: "PUT",
+                contentType: 'application/json; charset=UTF-8',
+                headers: { 'Content-Type': 'application/json' },
+                dataType: 'json',
+                body: JSON.stringify(adress)
+            })
+                .then(result => result.text())
+                .then(data => this.setState({ Id: data.id }));
+        }
+        else {
+            await fetch('api/Addresses/', {
+                method: "POST",
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify(adress)
+            })
+                .then(result => result.text())
+                .then(data => console.log(data));
         }
     }
 
-    async handleCep(event, setFieldValue) {
+    handleChangeCurriculum(e) {
+        const target = e.target;
+        this.state.curriculum[target.name] = target.value;
+    }
 
+    handleChangeAdress(e) {
+        const target = e.target;
+        this.state.adress[target.name] = target.value;
+    }
+
+    async handleChangeCep(event, setFieldValue) {
+        
         const value = event.target.value;
         const cep = value?.replace(/[^0-9]/g,'')
         if (cep?.length != 8) {
@@ -69,8 +151,7 @@ export class CurriculumEdit extends Component {
         const response = await fetch('https://viacep.com.br/ws/' + cep + '/json/')
             .then((res) => res.json)
             .then((data) => {
-                setFieldValue('road', data.logradouro)
-
+                this.state.adress["road"] = data.logradouro;
             });
     }
 
@@ -90,17 +171,17 @@ export class CurriculumEdit extends Component {
     renderEditCurriculum(setFieldValue) {
         return (
             <div>
-                <form onSubmit={this.handleSave}>
+                <form onSubmit={this.handleSaveCurriculum}>
                 <input type="hidden" name="id" value={this.state.curriculum.id} />
                     <div className="col-md-12 dados">
                         <div className="row">
                             <div className="input-group col-md-12">
-                                <input className="form-control name" type="text" name="name" placeholder="Nome" defaultValue={this.state.curriculum.name} required/>
+                                <input className="form-control name" type="text" name="name" placeholder="Nome" defaultValue={this.state.curriculum.name} onBlur={(e) => this.handleChangeCurriculum(e)} required/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-group col-md-12">
-                                <input className="form-control profession" type="text" name="profession" placeholder="Profissão" defaultValue={this.state.curriculum.name} required />
+                                <input className="form-control profession" type="text" name="profession" placeholder="Profissão" defaultValue={this.state.curriculum.name} onBlur={(e) => this.handleChangeCurriculum(e)} required />
                             </div>
                         </div>
                         <div className="row">
@@ -112,39 +193,40 @@ export class CurriculumEdit extends Component {
                         </div>
                         <div className="row">
                             <div className="input-group col-md-12">
-                                <input className="form-control title" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} required />
+                                <input className="form-control title" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} onBlur={(e) => this.handleChangeCurriculum(e)} required />
                             </div>
                         </div>
                         <div className="row">
-                            <div className="input-group col-md-6">
-                                <input className="form-control email" type="text" name="email" placeholder="Email" defaultValue={this.state.curriculum.email} required />
+                            <div className="input-group col-md-6"> 
+                                <input className="form-control email" type="text" name="email" placeholder="Email" defaultValue={this.state.curriculum.email} onBlur={(e) => this.handleChangeCurriculum(e)} required />
                             </div>
                             <div className="input-group col-md-3">
-                                <input className="form-control telephone" type="text" name="telephone" placeholder="Telefone" defaultValue={this.state.curriculum.telephone} required />
+                                <input className="form-control telephone" type="text" name="telephone" placeholder="Telefone" defaultValue={this.state.curriculum.telephone} onBlur={(e) => this.handleChangeCurriculum(e)} required />
                             </div>
                             <div className="input-group col-md-3">
-                                <input className="form-control cellphone" type="text" name="cellphone" placeholder="Celular" defaultValue={this.state.curriculum.cellphone} required />
+                                <input className="form-control cellphone" type="text" name="cellphone" placeholder="Celular" defaultValue={this.state.curriculum.cellphone} onBlur={(e) => this.handleChangeCurriculum(e)} required />
                             </div>
                         </div>
                     </div>
                     <div className="col-md-12 address">
                         <div className="row">
                             <div className="input-group col-md-2">
-                                <input className="form-control zip-code" type="text" name="zip-code" placeholder="00000-000" onBlur={(e) => this.handleCep(e,setFieldValue)} defaultValue={this.state.curriculum.name} required />
+                                {/*<input className="form-control zip-code" type="text" name="zip-code" placeholder="00000-000" onBlur={(e) => this.handleCep(e,setFieldValue)} defaultValue={this.state.curriculum.name} required />*/}
+                                <input className="form-control zip-code" type="text" name="zipCode" placeholder="00000-000" defaultValue={this.state.adress.zipCode} onBlur={(e) => this.handleChangeCep(e)} required />
                             </div>
                             <div className="input-group col-md-6">
-                                <input className="form-control road" type="text" name="road" placeholder="rua" defaultValue={this.state.curriculum.name} required />
+                                <input className="form-control road" type="text" name="road" placeholder="rua" defaultValue={this.state.adress.road} onBlur={(e) => this.handleChangeAdress(e)} required />
                             </div>
                             <div className="input-group col-md-4">
-                                <input className="form-control district" type="text" name="district" placeholder="bairro" defaultValue={this.state.curriculum.name} required />
+                                <input className="form-control district" type="text" name="district" placeholder="bairro" defaultValue={this.state.adress.district} onBlur={(e) => this.handleChangeAdress(e)} required />
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-group col-md-8">
-                                <input className="form-control city" type="text" name="city" placeholder="Cidade" defaultValue={this.state.curriculum.name} required />
+                                <input className="form-control city" type="text" name="city" placeholder="Cidade" defaultValue={this.state.adress.city} onBlur={(e) => this.handleChangeAdress(e)} required />
                             </div>
                             <div className="input-group col-md-4">
-                                <input className="form-control state" type="text" name="state" placeholder="Estado" defaultValue={this.state.curriculum.name} required />
+                                <input className="form-control state" type="text" name="state" placeholder="Estado" defaultValue={this.state.adress.state} onBlur={(e) => this.handleChangeAdress(e)} required />
                             </div>
                         </div>
                     </div>

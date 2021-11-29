@@ -24,6 +24,7 @@ export default class App extends Component {
                 <Route path='/curriculos' component={Curriculums} />
                 <Route path='/c/:id/:name' component={Curriculum} />
                 <Route path='/curriculo/edit/:id' component={CurriculumEdit} />
+                <Route path='/curriculo/new' component={CurriculumEdit} />
                 <Route path='/curriculo/exp/:id' component={CurriculumExperience} />
                 
             </Layout>

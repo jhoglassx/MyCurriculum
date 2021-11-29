@@ -81,7 +81,7 @@ namespace MyCurriculum.Controllers
             _context.Curriculums.Add(curriculum);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCurriculum", new { id = curriculum.Id }, curriculum);
+            return CreatedAtAction("GetCurriculum", new { id = curriculum.Id }, curriculum.Id);
         }
 
         // DELETE: api/Curriculums/5
