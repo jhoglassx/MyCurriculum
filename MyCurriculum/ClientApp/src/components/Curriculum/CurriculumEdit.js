@@ -58,6 +58,22 @@ export class CurriculumEdit extends Component {
         }
     }
 
+    async handleCep(event, setFieldValue) {
+
+        const value = event.target.value;
+        const cep = value?.replace(/[^0-9]/g,'')
+        if (cep?.length != 8) {
+            return;
+        }
+
+        const response = await fetch('https://viacep.com.br/ws/' + cep + '/json/')
+            .then((res) => res.json)
+            .then((data) => {
+                setFieldValue('road', data.logradouro)
+
+            });
+    }
+
     render() {
         let contents = this.state.loading
             ? <p><em> Carregando... </em></p>
@@ -71,7 +87,7 @@ export class CurriculumEdit extends Component {
         );
     }
 
-    renderEditCurriculum() {
+    renderEditCurriculum(setFieldValue) {
         return (
             <div>
                 <form onSubmit={this.handleSave}>
@@ -114,7 +130,7 @@ export class CurriculumEdit extends Component {
                     <div className="col-md-12 address">
                         <div className="row">
                             <div className="input-group col-md-2">
-                                <input className="form-control zip-code" type="text" name="zip-code" placeholder="00000-000" defaultValue={this.state.curriculum.name} required />
+                                <input className="form-control zip-code" type="text" name="zip-code" placeholder="00000-000" onBlur={(e) => this.handleCep(e,setFieldValue)} defaultValue={this.state.curriculum.name} required />
                             </div>
                             <div className="input-group col-md-6">
                                 <input className="form-control road" type="text" name="road" placeholder="rua" defaultValue={this.state.curriculum.name} required />
