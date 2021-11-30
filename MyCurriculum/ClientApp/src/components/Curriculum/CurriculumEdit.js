@@ -20,7 +20,7 @@ export class AdressModel {
         this.road = "";
         this.district = "";
         this.city = "";
-        this.state = "";
+        this.stateUF = "";
     }
 }
 
@@ -34,10 +34,9 @@ export class CurriculumEdit extends Component {
             loading: true
         };
         this.initialize();
-        this.loadAdress();
 
-       this.handleCancel = this.handleCancel.bind(this);
-        this.handleSave = this.handleSaveCurriculum.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleSaveCurriculum = this.handleSaveCurriculum.bind(this);
     }
 
     async initialize() {
@@ -48,11 +47,13 @@ export class CurriculumEdit extends Component {
             const response = await fetch('api/Curriculums/' + id);
             const data = await response.json();
             this.setState({ title: "Edit", curriculum: data, loading: false });
+            this.loadAdress();
         }
         else
         {
             this.state = { title: "Create", curriculum: new CurriculumModel(), adress: new AdressModel(), loading: false };
         }
+        
     }
 
     async loadAdress() {
@@ -66,7 +67,7 @@ export class CurriculumEdit extends Component {
 
         for (var i = 0; i < dataFilter.length; i++) {
             adress.push(dataFilter[i]);
-            this.setState({ adress: adress, loading: false });
+            this.setState({ title: "Edit", curriculum: this.state.curriculum, adress: adress, loading: false });
         }
     }
 
@@ -90,7 +91,7 @@ export class CurriculumEdit extends Component {
                 body: JSON.stringify(cur)
             })
                 .then(result => result.text())
-                .then(data => this.setState({ Id: data.id }));
+                .then((response) => { this.handleSaveAdress(response.data) });
         }
         else
         {
@@ -100,13 +101,14 @@ export class CurriculumEdit extends Component {
                 body: JSON.stringify(cur)
             })
                 .then(result => result.text())
-                .then(data => console.log(data));
+                .then((response) => { this.handleSaveAdress(response) })
+                .then((response) => console.log(response));
         }
-        this.handleSaveAdress(this.data)
+        
     }
 
     async handleSaveAdress(curId) {
-        const adress = this.state.adress[{ curriculumId: curId }];
+        const adress = this.state.adress;
 
         if (this.state.curriculum.id > 0) {
             await fetch('api/Addresses/' + this.state.adress.id, {
@@ -123,7 +125,7 @@ export class CurriculumEdit extends Component {
             await fetch('api/Addresses/', {
                 method: "POST",
                 headers: { 'content-type': 'application/json' },
-                body: JSON.stringify(adress)
+                body: JSON.stringify(adress,[{curriculumId: curId }])
             })
                 .then(result => result.text())
                 .then(data => console.log(data));
