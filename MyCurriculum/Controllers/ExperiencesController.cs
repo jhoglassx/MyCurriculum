@@ -82,7 +82,6 @@ namespace MyCurriculum.Controllers
         {
             _context.Experiences.Add(experience);
             
-
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetExperience", new { id = experience.Id }, experience);

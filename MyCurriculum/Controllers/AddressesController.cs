@@ -79,6 +79,7 @@ namespace MyCurriculum.Controllers
         public async Task<ActionResult<Address>> PostAddress([FromBody] Address address)
         {
             _context.Addresses.Add(address);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAddress", new { id = address.Id }, address);
