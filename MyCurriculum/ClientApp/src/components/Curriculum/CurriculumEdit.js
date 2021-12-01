@@ -20,7 +20,7 @@ export class AdressModel {
         this.road = "";
         this.district = "";
         this.city = "";
-        this.stateUF = "";
+        this.state = "";
     }
 }
 
@@ -61,7 +61,7 @@ export class CurriculumEdit extends Component {
         const response = await fetch('api/Addresses');
 
         const data = await response.json();
-        const dataFilter = data.filter(adress => adress?.curriculumId == id);
+        const dataFilter = data.filter(adress => adress?.curriculumId === id);
 
         var adress = this.state.adress;
 
@@ -146,15 +146,21 @@ export class CurriculumEdit extends Component {
         
         const value = event.target.value;
         const cep = value?.replace(/[^0-9]/g,'')
-        if (cep?.length != 8) {
+        if (cep?.length !== 8) {
             return;
         }
 
-        const response = await fetch('https://viacep.com.br/ws/' + cep + '/json/')
-            .then((res) => res.json)
+        const newAdress = this.state.adress //copy the array
+
+        const response = await fetch('https://viacep.com.br/ws/' + cep + '/json')
+            .then((res) => res.json())
             .then((data) => {
-                this.state.adress["road"] = data.logradouro;
+                newAdress["road"] = data.logradouro;
+                newAdress["district"] = data.bairro;
+                newAdress["city"] = data.localidade;
+                newAdress["state"] = data.uf;
             });
+        this.setState({ adress: newAdress })
     }
 
     render() {

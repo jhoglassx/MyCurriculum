@@ -28,7 +28,7 @@ export class CurriculumExperience extends Component {
         const response = await fetch('api/Experiences');
 
         const data = await response.json();
-        const dataFilter = data.filter(exp => exp?.curriculumId == id );
+        const dataFilter = data.filter(exp => exp?.curriculumId === id );
 
         var exp = this.state.experiences;
 
