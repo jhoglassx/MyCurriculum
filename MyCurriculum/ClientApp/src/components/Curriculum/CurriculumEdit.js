@@ -47,7 +47,7 @@ export class CurriculumEdit extends Component {
             const response = await fetch('api/Curriculums/' + id);
             const data = await response.json();
             this.setState({ title: "Edit", curriculum: data, loading: false });
-            this.loadAdress();
+            this.loadAdress(Number(id));
         }
         else
         {
@@ -56,18 +56,17 @@ export class CurriculumEdit extends Component {
         
     }
 
-    async loadAdress() {
-        var id = this.props.match.params["id"];
+    async loadAdress(id) {
         const response = await fetch('api/Addresses');
 
         const data = await response.json();
         const dataFilter = data.filter(adress => adress?.curriculumId === id);
 
-        var adress = this.state.adress;
+        const adress = this.state.adress;
 
         for (var i = 0; i < dataFilter.length; i++) {
-            adress.push(dataFilter[i]);
-            this.setState({ title: "Edit", curriculum: this.state.curriculum, adress: adress, loading: false });
+            //adress.push(dataFilter[i]);
+            this.setState({ title: "Edit", curriculum: this.state.curriculum, adress: dataFilter[i], loading: false });
         }
     }
 
@@ -91,7 +90,7 @@ export class CurriculumEdit extends Component {
                 body: JSON.stringify(cur)
             })
                 .then(result => result.text())
-                .then((response) => { this.handleSaveAdress(response.data) });
+                .then((response) => { this.handleSaveAdress(this.state.curriculum.id) });
         }
         else
         {
@@ -109,6 +108,7 @@ export class CurriculumEdit extends Component {
 
     async handleSaveAdress(curId) {
         const adress = this.state.adress;
+        adress["curriculumId"] = curId;
 
         if (this.state.curriculum.id > 0) {
             await fetch('api/Addresses/' + this.state.adress.id, {
@@ -125,7 +125,7 @@ export class CurriculumEdit extends Component {
             await fetch('api/Addresses/', {
                 method: "POST",
                 headers: { 'content-type': 'application/json' },
-                body: JSON.stringify(adress,[{curriculumId: curId }])
+                body: JSON.stringify(adress)
             })
                 .then(result => result.text())
                 .then(data => console.log(data));
@@ -142,7 +142,7 @@ export class CurriculumEdit extends Component {
         this.state.adress[target.name] = target.value;
     }
 
-    async handleChangeCep(event, setFieldValue) {
+    async handleChangeCep(event) {
         
         const value = event.target.value;
         const cep = value?.replace(/[^0-9]/g,'')
@@ -155,6 +155,7 @@ export class CurriculumEdit extends Component {
         const response = await fetch('https://viacep.com.br/ws/' + cep + '/json')
             .then((res) => res.json())
             .then((data) => {
+                newAdress["zipCode"] = cep;
                 newAdress["road"] = data.logradouro;
                 newAdress["district"] = data.bairro;
                 newAdress["city"] = data.localidade;
