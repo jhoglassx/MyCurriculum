@@ -24,18 +24,27 @@ export class CurriculumExperience extends Component {
         
     }
     async load() {
-        var id = this.props.match.params["id"];
+        var id = Number(this.props.match.params["id"]);
         const response = await fetch('api/Experiences');
 
         const data = await response.json();
-        const dataFilter = data.filter(exp => exp?.curriculumId === id );
+        
 
-        var exp = this.state.experiences;
+        if (data.length > 0) {
 
-        for (var i = 0; i < dataFilter.length; i++) {
-            exp.push(dataFilter[i]);
-            this.setState({ experiences:exp , loading: false });
+            const dataFilter = data.filter(exp => exp?.curriculumId === id);
+
+            var exp = this.state.experiences;
+
+            for (var i = 0; i < dataFilter.length; i++) {
+                exp.push(dataFilter[i]);
+                this.setState({ experiences: exp, loading: false });
+            }
+        } else {
+            this.setState({ experiences: [new ExperienceModel(id)], loading: false });
         }
+
+        
     }
 
     handleAddExperience(event) {
@@ -50,7 +59,7 @@ export class CurriculumExperience extends Component {
 
     handleCancel(event) {
         event.preventDefault();
-        this.props.history.push("/CurriculumEdit")
+        this.props.history.push("/Curriculum/Edit")
     }
 
     handleChange(e, index) {
@@ -58,7 +67,7 @@ export class CurriculumExperience extends Component {
         this.state.experiences[index][target.name] = target.value;
     }
 
-    async handleSave(e, index) {
+    async handleSave(e) {
         e.preventDefault();
 
         for (var i = 0; i < this.state.experiences.length;i++) {
@@ -87,7 +96,7 @@ export class CurriculumExperience extends Component {
                     .then(data => console.log(data));
             }
         }
-        this.props.history.push("/CurriculumEdit");
+        this.props.history.push("/Curriculum/Edit");
     }
 
     render() {
@@ -100,7 +109,6 @@ export class CurriculumExperience extends Component {
             </div>
         );
     }
-
 
     renderExperiencia() {
         return (

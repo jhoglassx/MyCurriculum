@@ -68,11 +68,12 @@ export class CurriculumEdit extends Component {
             //adress.push(dataFilter[i]);
             this.setState({ title: "Edit", curriculum: this.state.curriculum, adress: dataFilter[i], loading: false });
         }
+
     }
 
     handleCancel(event) {
         event.preventDefault();
-        this.props.history.push("/CurriculumEdit")
+        this.props.history.push("/Curriculum/Edit")
     }
 
     async handleSaveCurriculum(event) {
@@ -106,9 +107,9 @@ export class CurriculumEdit extends Component {
         
     }
 
-    async handleSaveAdress(curId) {
+    async handleSaveAdress(cId) {
         const adress = this.state.adress;
-        adress["curriculumId"] = curId;
+        adress["curriculumId"] = cId;
 
         if (this.state.curriculum.id > 0) {
             await fetch('api/Addresses/' + this.state.adress.id, {
@@ -130,6 +131,8 @@ export class CurriculumEdit extends Component {
                 .then(result => result.text())
                 .then(data => console.log(data));
         }
+
+        this.props.history.push("/Curriculum/exp/" + cId);
     }
 
     handleChangeCurriculum(e) {
@@ -185,28 +188,21 @@ export class CurriculumEdit extends Component {
                     <div className="col-md-12 dados">
                         <div className="row">
                             <div className="input-group col-md-12">
+                                <input className="form-control title" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} onBlur={(e) => this.handleChangeCurriculum(e)} required />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-group col-md-12">
                                 <input className="form-control name" type="text" name="name" placeholder="Nome" defaultValue={this.state.curriculum.name} onBlur={(e) => this.handleChangeCurriculum(e)} required/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-group col-md-12">
-                                <input className="form-control profession" type="text" name="profession" placeholder="Profissão" defaultValue={this.state.curriculum.name} onBlur={(e) => this.handleChangeCurriculum(e)} required />
+                                <input className="form-control profession" type="text" name="profession" placeholder="Profissão" defaultValue={this.state.curriculum.profession} onBlur={(e) => this.handleChangeCurriculum(e)} required />
                             </div>
                         </div>
                         <div className="row">
-                            <div className="input-group col-md-12">
-                                <textarea className="form-control resume" name="resume" required>
-                                    {this.state.curriculum.resume}
-                                </textarea>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-group col-md-12">
-                                <input className="form-control title" type="text" name="title" placeholder="Titulo" defaultValue={this.state.curriculum.title} onBlur={(e) => this.handleChangeCurriculum(e)} required />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-group col-md-6"> 
+                            <div className="input-group col-md-6">
                                 <input className="form-control email" type="text" name="email" placeholder="Email" defaultValue={this.state.curriculum.email} onBlur={(e) => this.handleChangeCurriculum(e)} required />
                             </div>
                             <div className="input-group col-md-3">
@@ -214,6 +210,13 @@ export class CurriculumEdit extends Component {
                             </div>
                             <div className="input-group col-md-3">
                                 <input className="form-control cellphone" type="text" name="cellphone" placeholder="Celular" defaultValue={this.state.curriculum.cellphone} onBlur={(e) => this.handleChangeCurriculum(e)} required />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-group col-md-12">
+                                <textarea className="form-control resume" name="resume" required>
+                                    {this.state.curriculum.resume}
+                                </textarea>
                             </div>
                         </div>
                     </div>
