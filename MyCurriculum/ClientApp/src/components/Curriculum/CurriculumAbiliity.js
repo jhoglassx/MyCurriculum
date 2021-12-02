@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { ExperienceModel } from './CurriculumExperience';
 
 export class CourseModel {
     constructor(props) {
@@ -39,8 +40,8 @@ export class CurriculumAbiliity extends Component {
         this.state = {
             title: "",
             academicEducations: [],
-            Courses: [],
-            Skills: [],
+            courses: [],
+            skills: [],
             loading: true
         };
         this.load();
@@ -56,7 +57,7 @@ export class CurriculumAbiliity extends Component {
 
     async loadAcademicEducations(cId) {
         var id = Number(cId);
-        const response = await fetch('api/Experiences');
+        const response = await fetch('api/AcademicEducations');
 
         const data = await response.json();
 
@@ -64,14 +65,56 @@ export class CurriculumAbiliity extends Component {
 
             const dataFilter = data.filter(exp => exp?.curriculumId === id);
 
-            var exp = this.state.experiences;
+            var exp = this.state.academicEducations;
 
             for (var i = 0; i < dataFilter.length; i++) {
                 exp.push(dataFilter[i]);
-                this.setState({ experiences: exp, loading: false });
+                this.setState({ academicEducations: exp, loading: false });
             }
         } else {
-            this.setState({ experiences: [new ExperienceModel(id)], loading: false });
+            this.setState({ academicEducations: [new AcademicEducationModel(id)], loading: false });
+        }
+    }
+
+    async loadCourses(cId) {
+        var id = Number(cId);
+        const response = await fetch('api/Courses');
+
+        const data = await response.json();
+
+        if (data.length > 0) {
+
+            const dataFilter = data.filter(exp => exp?.curriculumId === id);
+
+            var exp = this.state.courses;
+
+            for (var i = 0; i < dataFilter.length; i++) {
+                exp.push(dataFilter[i]);
+                this.setState({ courses: exp, loading: false });
+            }
+        } else {
+            this.setState({ courses: [new CourseModel(id)], loading: false });
+        }
+    }
+
+    async loadSkills(cId) {
+        var id = Number(cId);
+        const response = await fetch('api/Skills');
+
+        const data = await response.json();
+
+        if (data.length > 0) {
+
+            const dataFilter = data.filter(exp => exp?.curriculumId === id);
+
+            var ski = this.state.skills;
+
+            for (var i = 0; i < dataFilter.length; i++) {
+                exp.push(dataFilter[i]);
+                this.setState({ skills: exp, loading: false });
+            }
+        } else {
+            this.setState({ skills: [new SkillModel(id)], loading: false });
         }
     }
 
