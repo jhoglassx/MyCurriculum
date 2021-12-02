@@ -29,7 +29,6 @@ export class CurriculumExperience extends Component {
 
         const data = await response.json();
         
-
         if (data.length > 0) {
 
             const dataFilter = data.filter(exp => exp?.curriculumId === id);
@@ -43,8 +42,6 @@ export class CurriculumExperience extends Component {
         } else {
             this.setState({ experiences: [new ExperienceModel(id)], loading: false });
         }
-
-        
     }
 
     handleAddExperience(event) {
