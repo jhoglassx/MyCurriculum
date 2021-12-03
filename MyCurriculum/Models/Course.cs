@@ -10,7 +10,7 @@ namespace MyCurriculum.Models
         public int Id { get; set; }
         public int CurriculumId { get; set; }
         public string Institution { get; set; }//Instuição de formação
-        public string Title { get; set; }
+        public string Nome { get; set; }
         public DateTime DateIntial { get; set; }//Data de inicio do curso
         public DateTime DateConclusion { get; set; }//Data de Conclução do curso
         public DateTime Created_at { get; set; }

@@ -132,7 +132,7 @@ export class CurriculumEdit extends Component {
                 .then(data => console.log(data));
         }
 
-        this.props.history.push("/Curriculum/exp/" + cId);
+        this.props.history.push("/curriculo/exp/" + cId);
     }
 
     handleChangeCurriculum(e) {

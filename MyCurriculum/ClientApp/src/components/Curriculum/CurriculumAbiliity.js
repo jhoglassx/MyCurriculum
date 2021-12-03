@@ -16,7 +16,7 @@ export class SkillModel {
     constructor(props) {
         this.Id = "";
         this.CurriculumId = props;
-        this.Title = "";
+        this.name = "";
         this.SkillTime = "";
         this.SkillNivel = "";
     }
@@ -48,22 +48,25 @@ export class CurriculumAbiliity extends Component {
 
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        this.handleAddExperience = this.handleAddExperience.bind(this);
+        this.handleAddAcademicEducation = this.handleAddAcademicEducation.bind(this);
+        this.handleAddCourse = this.handleAddCourse.bind(this);
+        this.handleAddSkill = this.handleAddSkill.bind(this);
         
     }
     async load() {
-        loadAcademicEducations(cId);
+        var cId = Number(this.props.match.params["id"]);
+        this.loadAcademicEducations(cId);
     }
 
     async loadAcademicEducations(cId) {
-        var id = Number(cId);
+
         const response = await fetch('api/AcademicEducations');
 
         const data = await response.json();
 
         if (data.length > 0) {
 
-            const dataFilter = data.filter(exp => exp?.curriculumId === id);
+            const dataFilter = data.filter(exp => exp?.curriculumId === cId);
 
             var exp = this.state.academicEducations;
 
@@ -72,19 +75,18 @@ export class CurriculumAbiliity extends Component {
                 this.setState({ academicEducations: exp, loading: false });
             }
         } else {
-            this.setState({ academicEducations: [new AcademicEducationModel(id)], loading: false });
+            this.setState({ academicEducations: [new AcademicEducationModel(cId)], loading: false });
         }
     }
 
     async loadCourses(cId) {
-        var id = Number(cId);
         const response = await fetch('api/Courses');
 
         const data = await response.json();
 
         if (data.length > 0) {
 
-            const dataFilter = data.filter(exp => exp?.curriculumId === id);
+            const dataFilter = data.filter(exp => exp?.curriculumId === cId);
 
             var exp = this.state.courses;
 
@@ -93,39 +95,59 @@ export class CurriculumAbiliity extends Component {
                 this.setState({ courses: exp, loading: false });
             }
         } else {
-            this.setState({ courses: [new CourseModel(id)], loading: false });
+            this.setState({ courses: [new CourseModel(cId)], loading: false });
         }
     }
 
     async loadSkills(cId) {
-        var id = Number(cId);
+
         const response = await fetch('api/Skills');
 
         const data = await response.json();
 
         if (data.length > 0) {
 
-            const dataFilter = data.filter(exp => exp?.curriculumId === id);
+            const dataFilter = data.filter(exp => exp?.curriculumId === cId);
 
             var ski = this.state.skills;
 
             for (var i = 0; i < dataFilter.length; i++) {
-                exp.push(dataFilter[i]);
-                this.setState({ skills: exp, loading: false });
+                ski.push(dataFilter[i]);
+                this.setState({ skills: ski, loading: false });
             }
         } else {
-            this.setState({ skills: [new SkillModel(id)], loading: false });
+            this.setState({ skills: [new SkillModel(cId)], loading: false });
         }
     }
 
-    handleAddExperience(event) {
+    handleAddAcademicEducation(event) {
         event.preventDefault();
 
-        var exp = this.state.experiences;
+        var aca = this.state.academicEducations;
 
-        exp.push(new ExperienceModel(exp[0].curriculumId));
+        aca.push(new AcademicEducationModel(aca[0].curriculumId));
 
-        this.setState({ experiences: exp });
+        this.setState({ academicEducations: aca });
+    };
+
+    handleAddCourse(event) {
+        event.preventDefault();
+
+        var cou = this.state.courses;
+
+        cou.push(new CourseModel(cou[0].curriculumId));
+
+        this.setState({ courses: cou });
+    };
+
+    handleAddSkill(event) {
+        event.preventDefault();
+
+        var ski = this.state.skills;
+
+        ski.push(new SkillModel(ski[0].curriculumId));
+
+        this.setState({ skills: ski });
     };
 
     handleCancel(event) {
@@ -133,7 +155,15 @@ export class CurriculumAbiliity extends Component {
         this.props.history.push("/Curriculum/Edit")
     }
 
-    handleChange(e, index) {
+    handleChangeacademicEducations(e, index) {
+        const target = e.target;
+        this.state.experiences[index][target.name] = target.value;
+    }
+    handleChangeCourse(e, index) {
+        const target = e.target;
+        this.state.experiences[index][target.name] = target.value;
+    }
+    handleChangeSkill(e, index) {
         const target = e.target;
         this.state.experiences[index][target.name] = target.value;
     }
@@ -185,39 +215,93 @@ export class CurriculumAbiliity extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSave}>
-                    {this.state.experiences.map((experience, index) => (
-                        <div key={index} className="experience">
-                            <input type="hidden" name="id" value={experience.id} />
-                            <div className="row">
-                                <div className="input-group col-md-12">
-                                    <input className="form-control company" type="text" name="company" id={index} placeholder="Contratante" defaultValue={experience.company} onChange={(e) => this.handleChange(e, index)} required />
+                    <div className="academicEducations">
+                        {this.state.academicEducations.map((academicEducation, index) => (
+                            <div key={index} className="academicEducation">
+                                <input type="hidden" name="id" value={academicEducation.id} />
+                                <div className="row">
+                                    <div className="input-group col-md-12">
+                                        <input className="form-control company" type="text" name="institution" id={index} placeholder="Contratante" defaultValue={academicEducation.institution} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="input-group col-md-6">
+                                        <input className="form-control occupation" type="text" name="course" placeholder="Ocupação" defaultValue={academicEducation.course} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                    <div className="input-group col-md-3">
+                                        <input className="form-control dateHiring" type="text" name="dateIntial" placeholder="Data de Inicio" defaultValue={academicEducation.dateIntial} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                    <div className="input-group col-md-3">
+                                        <input className="form-control dateResignation" type="text" name="dateConclusion" placeholder="Data de Conclusão" defaultValue={academicEducation.dateConclusion} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="input-group col-md-6">
-                                    <input className="form-control occupation" type="text" name="occupation" placeholder="Ocupação" defaultValue={experience.occupation} onChange={(e) => this.handleChange(e, index)} required />
-                                </div>
-                                <div className="input-group col-md-3">
-                                    <input className="form-control dateHiring" type="text" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onChange={(e) => this.handleChange(e, index)} required />
-                                </div>
-                                <div className="input-group col-md-3">
-                                    <input className="form-control dateResignation" type="text" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onChange={(e) => this.handleChange(e, index)} required />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="input-group col-md-12">
-                                    <textarea className="form-control description" name="description" onChange={(e) => this.handleChange(e, index)} required>
-                                        {experience.description}
-                                    </textarea>
-                                </div>
+                        ))}
+                    
+                        <div className="row">
+                            <div className="form-group col-md-12">
+                                <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
+                                <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
                             </div>
                         </div>
-                    ))}
-                    
-                    <div className="row">
-                        <div className="form-group col-md-12">
-                            <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
-                            <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                    </div>
+
+                    <div className="courses">
+                        {this.state.courses.map((course, index) => (
+                            <div key={index} className="course">
+                                <input type="hidden" name="id" value={course.id} />
+                                <div className="row">
+                                    <div className="input-group col-md-12">
+                                        <input className="form-control company" type="text" name="institution" id={index} placeholder="Contratante" defaultValue={course.institution} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="input-group col-md-6">
+                                        <input className="form-control occupation" type="text" name="name" placeholder="Ocupação" defaultValue={course.name} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                    <div className="input-group col-md-3">
+                                        <input className="form-control dateHiring" type="text" name="dateIntial" placeholder="Data de Inicio" defaultValue={course.dateIntial} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                    <div className="input-group col-md-3">
+                                        <input className="form-control dateResignation" type="text" name="dateConclusion" placeholder="Data de Conclusão" defaultValue={course.dateConclusion} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="row">
+                            <div className="form-group col-md-12">
+                                <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
+                                <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="courses">
+                        {this.state.skills.map((skill, index) => (
+                            <div key={index} className="course">
+                                <input type="hidden" name="id" value={skill.id} />
+                                <div className="row">
+                                    <div className="input-group col-md-12">
+                                        <input className="form-control company" type="text" name="title" id={index} placeholder="Titulo" defaultValue={skill.title} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="input-group col-md-6">
+                                        <input className="form-control occupation" type="text" name="skillTime" placeholder="Tempo" defaultValue={skill.skillTime} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                    <div className="input-group col-md-3">
+                                        <input className="form-control dateHiring" type="text" name="skillNivel" placeholder="Nivel de Habilidade" defaultValue={skill.skillNivel} onChange={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="row">
+                            <div className="form-group col-md-12">
+                                <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
+                                <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                            </div>
                         </div>
                     </div>
                 </form>

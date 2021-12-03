@@ -24,14 +24,14 @@ export class CurriculumExperience extends Component {
         
     }
     async load() {
-        var id = Number(this.props.match.params["id"]);
+        var cid = Number(this.props.match.params["id"]);
         const response = await fetch('api/Experiences');
 
         const data = await response.json();
         
         if (data.length > 0) {
 
-            const dataFilter = data.filter(exp => exp?.curriculumId === id);
+            const dataFilter = data.filter(exp => exp?.curriculumId === cid);
 
             var exp = this.state.experiences;
 
@@ -40,7 +40,7 @@ export class CurriculumExperience extends Component {
                 this.setState({ experiences: exp, loading: false });
             }
         } else {
-            this.setState({ experiences: [new ExperienceModel(id)], loading: false });
+            this.setState({ experiences: [new ExperienceModel(cid)], loading: false });
         }
     }
 
@@ -56,7 +56,7 @@ export class CurriculumExperience extends Component {
 
     handleCancel(event) {
         event.preventDefault();
-        this.props.history.push("/Curriculum/Edit")
+        this.props.history.push("/curriculo/Edit")
     }
 
     handleChange(e, index) {
@@ -70,7 +70,6 @@ export class CurriculumExperience extends Component {
         for (var i = 0; i < this.state.experiences.length;i++) {
             
             const exp = this.state.experiences[i];
-
 
             if (exp.id > 0) {
                 await fetch('api/Experiences/' + exp.id, {
@@ -93,7 +92,7 @@ export class CurriculumExperience extends Component {
                     .then(data => console.log(data));
             }
         }
-        this.props.history.push("/Curriculum/Edit");
+        this.props.history.push("/curriculo/abi/" + this.state.experiences[0].curriculumId);
     }
 
     render() {
@@ -124,10 +123,10 @@ export class CurriculumExperience extends Component {
                                     <input className="form-control occupation" type="text" name="occupation" placeholder="Ocupação" defaultValue={experience.occupation} onChange={(e) => this.handleChange(e, index)} required />
                                 </div>
                                 <div className="input-group col-md-3">
-                                    <input className="form-control dateHiring" type="text" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onChange={(e) => this.handleChange(e, index)} required />
+                                    <input className="form-control dateHiring" type="date" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onChange={(e) => this.handleChange(e, index)} required />
                                 </div>
                                 <div className="input-group col-md-3">
-                                    <input className="form-control dateResignation" type="text" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onChange={(e) => this.handleChange(e, index)} required />
+                                    <input className="form-control dateResignation" type="date" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onChange={(e) => this.handleChange(e, index)} required />
                                 </div>
                             </div>
                             <div className="row">
