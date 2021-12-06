@@ -61,7 +61,9 @@ export class CurriculumExperience extends Component {
 
     handleChange(e, index) {
         const target = e.target;
-        this.state.experiences[index][target.name] = target.value;
+        var targetValue = target.value;
+
+        idfthis.setState({ experiences: [this.state.experiences[index][target.name]=targetValue ]});
     }
 
     async handleSave(e) {
@@ -115,23 +117,23 @@ export class CurriculumExperience extends Component {
                             <input type="hidden" name="id" value={experience.id} />
                             <div className="row">
                                 <div className="input-group col-md-12">
-                                    <input className="form-control company" type="text" name="company" id={index} placeholder="Contratante" defaultValue={experience.company} onChange={(e) => this.handleChange(e, index)} required />
+                                    <input className="form-control company" type="text" name="company" id={index} placeholder="Contratante" defaultValue={experience.company} onBlur={(e) => this.handleChange(e, index)} required />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="input-group col-md-6">
-                                    <input className="form-control occupation" type="text" name="occupation" placeholder="Ocupação" defaultValue={experience.occupation} onChange={(e) => this.handleChange(e, index)} required />
+                                    <input className="form-control occupation" type="text" name="occupation" placeholder="Ocupação" defaultValue={experience.occupation} onBlur={(e) => this.handleChange(e, index)} required />
                                 </div>
                                 <div className="input-group col-md-3">
-                                    <input className="form-control dateHiring" type="date" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onChange={(e) => this.handleChange(e, index)} required />
+                                    <input className="form-control dateHiring" type="date" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onBlur={(e) => this.handleChange(e, index)} required />
                                 </div>
                                 <div className="input-group col-md-3">
-                                    <input className="form-control dateResignation" type="date" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onChange={(e) => this.handleChange(e, index)} required />
+                                    <input className="form-control dateResignation" type="date" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onBlur={(e) => this.handleChange(e, index)} required />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="input-group col-md-12">
-                                    <textarea className="form-control description" name="description" onChange={(e) => this.handleChange(e, index)} required>
+                                    <textarea className="form-control description" name="description" onBlur={(e) => this.handleChange(e, index)} required>
                                         {experience.description}
                                     </textarea>
                                 </div>
