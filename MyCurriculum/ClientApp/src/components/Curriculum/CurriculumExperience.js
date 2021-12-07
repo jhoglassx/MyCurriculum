@@ -1,13 +1,15 @@
 ﻿import React, { Component } from 'react';
+import { format } from 'date-fns';
 
 export class ExperienceModel {
     constructor(props) {
-        this.curriculumId = props;
-        this.dateHiring = "";
-        this.dateResignation = "";
-        this.company = "";
-        this.occupation = "";
-        this.description = "";
+        this.id = props.id
+        this.curriculumId = props.curriculumId;
+        this.dateHiring = props.id >0 ? format(new Date(props.dateHiring), 'yyyy-MM-dd') : "";
+        this.dateResignation = props.id > 0 ? format(new Date(props.dateResignation), 'yyyy-MM-dd') :"";
+        this.company = props.company;
+        this.occupation = props.occupation
+        this.description = props.description;
     }
 }
 
@@ -36,11 +38,11 @@ export class CurriculumExperience extends Component {
             var exp = this.state.experiences;
 
             for (var i = 0; i < dataFilter.length; i++) {
-                exp.push(dataFilter[i]);
+                exp.push(new ExperienceModel(dataFilter[i]));
                 this.setState({ experiences: exp, loading: false });
             }
         } else {
-            this.setState({ experiences: [new ExperienceModel(cid)], loading: false });
+            this.setState({ experiences: [new ExperienceModel({ id: cid })], loading: false });
         }
     }
 
@@ -61,9 +63,10 @@ export class CurriculumExperience extends Component {
 
     handleChange(e, index) {
         const target = e.target;
-        var targetValue = target.value;
 
-        idfthis.setState({ experiences: [this.state.experiences[index][target.name]=targetValue ]});
+        var exp = this.state.experiences;
+        exp[index][target.name] = target.value;
+        this.setState({ experiences: exp });
     }
 
     async handleSave(e) {
