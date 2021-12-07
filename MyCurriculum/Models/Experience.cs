@@ -9,7 +9,13 @@ namespace MyCurriculum.Models
         [Key]
         public int Id { get; set; }
         public int CurriculumId { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateHiring { get; set; }//data de contratação
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateResignation { get; set; }//data de demissão
         public string Company { get; set; }//Empresa
         public string Occupation { get; set; }//Função realizada
