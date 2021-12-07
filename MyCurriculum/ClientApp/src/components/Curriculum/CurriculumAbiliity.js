@@ -240,8 +240,8 @@ export class CurriculumAbiliity extends Component {
                     
                         <div className="row">
                             <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
-                                <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                                <button type="submit" className="btn btn-success float-right" value={this.academicEducations}>Salvar</button>
+                                <button type="submit" className="btn btn-success" onClick={this.handleAddAcademicEducation} >Adcionar Formação</button>
                             </div>
                         </div>
                     </div>
@@ -271,8 +271,8 @@ export class CurriculumAbiliity extends Component {
 
                         <div className="row">
                             <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
-                                <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                                <button type="submit" className="btn btn-success float-right" value={this.courses}>Salvar</button>
+                                <button type="submit" className="btn btn-success" onClick={this.handleAddCourse} >Adcionar Curso</button>
                             </div>
                         </div>
                     </div>
@@ -299,8 +299,8 @@ export class CurriculumAbiliity extends Component {
 
                         <div className="row">
                             <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
-                                <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                                <button type="submit" className="btn btn-success float-right" value={this.skills}>Salvar</button>
+                                <button type="submit" className="btn btn-success" onClick={this.handleAddSkill} >Adcionar Habilidade</button>
                             </div>
                         </div>
                     </div>
