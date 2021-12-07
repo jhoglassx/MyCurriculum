@@ -3,10 +3,10 @@ import { format } from 'date-fns';
 
 export class ExperienceModel {
     constructor(props) {
-        this.id = props.id
+        this.id = props.id > 0 ? props.id : 0;
         this.curriculumId = props.curriculumId;
-        this.dateHiring = props.id >0 ? format(new Date(props.dateHiring), 'yyyy-MM-dd') : "";
-        this.dateResignation = props.id > 0 ? format(new Date(props.dateResignation), 'yyyy-MM-dd') :"";
+        this.dateHiring = props.id > 0 ? format(new Date(props.dateHiring), 'yyyy-MM-dd') : new Date("1999-01-00");
+        this.dateResignation = props.id > 0 ? format(new Date(props.dateResignation), 'yyyy-MM-dd') : new Date("1999-01-00");
         this.company = props.company;
         this.occupation = props.occupation
         this.description = props.description;
@@ -42,7 +42,7 @@ export class CurriculumExperience extends Component {
                 this.setState({ experiences: exp, loading: false });
             }
         } else {
-            this.setState({ experiences: [new ExperienceModel({ id: cid })], loading: false });
+            this.setState({ experiences: [new ExperienceModel({ curriculumId: cid })], loading: false });
         }
     }
 
@@ -51,7 +51,7 @@ export class CurriculumExperience extends Component {
 
         var exp = this.state.experiences;
 
-        exp.push(new ExperienceModel(exp[0].curriculumId));
+        exp.push(new ExperienceModel({ curriculumId: exp[0].curriculumId }));
 
         this.setState({ experiences: exp });
     };
