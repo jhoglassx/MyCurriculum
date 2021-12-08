@@ -5,8 +5,8 @@ export class ExperienceModel {
     constructor(props) {
         this.id = props.id > 0 ? props.id : 0;
         this.curriculumId = props.curriculumId;
-        this.dateHiring = props.id > 0 ? format(new Date(props.dateHiring), 'yyyy-MM-dd') : new Date("1999-01-00");
-        this.dateResignation = props.id > 0 ? format(new Date(props.dateResignation), 'yyyy-MM-dd') : new Date("1999-01-00");
+        this.dateHiring = props.id > 0 ? format(new Date(props.dateHiring), 'yyyy-MM-dd') : new Date();
+        this.dateResignation = props.id > 0 && props.dateResignation != null ? format(new Date(props.dateResignation), 'yyyy-MM-dd') : null;
         this.company = props.company;
         this.occupation = props.occupation
         this.description = props.description;
@@ -131,7 +131,7 @@ export class CurriculumExperience extends Component {
                                     <input className="form-control dateHiring" type="date" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onBlur={(e) => this.handleChange(e, index)} required />
                                 </div>
                                 <div className="input-group col-md-3">
-                                    <input className="form-control dateResignation" type="date" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onBlur={(e) => this.handleChange(e, index)} required />
+                                    <input className="form-control dateResignation" type="date" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onBlur={(e) => this.handleChange(e, index)}/>
                                 </div>
                             </div>
                             <div className="row">

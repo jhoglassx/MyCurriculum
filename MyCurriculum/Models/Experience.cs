@@ -16,7 +16,7 @@ namespace MyCurriculum.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime DateResignation { get; set; }//data de demissão
+        public DateTime? DateResignation { get; set; }//data de demissão
         public string Company { get; set; }//Empresa
         public string Occupation { get; set; }//Função realizada
         public string Description { get; set; }//Descrição das tarefas realizadas

@@ -1,35 +1,35 @@
 ﻿import React, { Component } from 'react';
-import { ExperienceModel } from './CurriculumExperience';
+import { format } from 'date-fns';
 
 export class CourseModel {
     constructor(props) {
-        this.Id = "";
-        this.CurriculumId = props;
-        this.Institution = "";//Instuição de formação
-        this.Title = "";
-        this.DateIntial = "";//Data de inicio do curso
-        this.DateConclusion = "";
+        this.id = props.id > 0 ? props.id : 0;
+        this.curriculumId = props.curriculumId;
+        this.institution = props.id > 0 ? props.institution : "";//Instuição de formação
+        this.name = props.id > 0 ? props.name : "";
+        this.dateInitial = props.id > 0 ? format(new Date(props.dateInitial), 'yyyy-MM-dd') : new Date("1999-01-00");//Data de inicio do curso
+        this.dateConclusion = props.id > 0 ? format(new Date(props.dateConclusion), 'yyyy-MM-dd') : new Date("1999-01-00");
     }
 }
 
 export class SkillModel {
     constructor(props) {
-        this.Id = "";
-        this.CurriculumId = props;
-        this.name = "";
-        this.SkillTime = "";
-        this.SkillNivel = "";
+        this.id = props.id > 0 ? props.id : 0;
+        this.curriculumId = props.curriculumId;
+        this.title = props.id > 0 ? props.title : "";
+        this.skillTime = props.id > 0 ? props.skillTime : "";
+        this.skillNivel = props.id > 0 ? props.skillNivel : "";
     }
 }
 
 export class AcademicEducationModel {
     constructor(props) {
-        this.id = "";
-        this.curriculumId = props;
-        this.institution = "";//Instuição de formação
-        this.course = "";
-        this.dateIntial = "";//Data de inicio do curso
-        this.dateConclusion = "";
+        this.id = props.id > 0 ? props.id : 0;
+        this.curriculumId = props.curriculumId;
+        this.institution = props.id > 0 ? props.institution : "";//Instuição de formação
+        this.course = props.id > 0 ? props.course : "";
+        this.dateInitial = props.id > 0 ? format(new Date(props.dateInitial), 'yyyy-MM-dd') : new Date();//Data de inicio do curso
+        this.dateConclusion = props.id > 0 ? format(new Date(props.dateConclusion), 'yyyy-MM-dd') : new Date();
     }
 }
 
@@ -51,11 +51,12 @@ export class CurriculumAbiliity extends Component {
         this.handleAddAcademicEducation = this.handleAddAcademicEducation.bind(this);
         this.handleAddCourse = this.handleAddCourse.bind(this);
         this.handleAddSkill = this.handleAddSkill.bind(this);
-        
     }
     async load() {
         var cId = Number(this.props.match.params["id"]);
         this.loadAcademicEducations(cId);
+        this.loadCourses(cId);
+        this.loadSkills(cId);
     }
 
     async loadAcademicEducations(cId) {
@@ -66,16 +67,16 @@ export class CurriculumAbiliity extends Component {
 
         if (data.length > 0) {
 
-            const dataFilter = data.filter(exp => exp?.curriculumId === cId);
+            const dataFilter = data.filter(aca => aca?.curriculumId === cId);
 
-            var exp = this.state.academicEducations;
+            var aca = this.state.academicEducations;
 
             for (var i = 0; i < dataFilter.length; i++) {
-                exp.push(dataFilter[i]);
-                this.setState({ academicEducations: exp, loading: false });
+                aca.push(new AcademicEducationModel(dataFilter[i]));
+                this.setState({ academicEducations: aca, loading: false });
             }
         } else {
-            this.setState({ academicEducations: [new AcademicEducationModel(cId)], loading: false });
+            this.setState({ academicEducations: [new AcademicEducationModel({ curriculumId: cId  })], loading: false });
         }
     }
 
@@ -86,16 +87,16 @@ export class CurriculumAbiliity extends Component {
 
         if (data.length > 0) {
 
-            const dataFilter = data.filter(exp => exp?.curriculumId === cId);
+            const dataFilter = data.filter(cou => cou?.curriculumId === cId);
 
-            var exp = this.state.courses;
+            var cou = this.state.courses;
 
             for (var i = 0; i < dataFilter.length; i++) {
-                exp.push(dataFilter[i]);
-                this.setState({ courses: exp, loading: false });
+                cou.push(new CourseModel(dataFilter[i]));
+                this.setState({ courses: cou, loading: false });
             }
         } else {
-            this.setState({ courses: [new CourseModel(cId)], loading: false });
+            this.setState({ courses: [new CourseModel({ curriculumId: cId })], loading: false });
         }
     }
 
@@ -112,11 +113,11 @@ export class CurriculumAbiliity extends Component {
             var ski = this.state.skills;
 
             for (var i = 0; i < dataFilter.length; i++) {
-                ski.push(dataFilter[i]);
+                ski.push(new SkillModel(dataFilter[i]));
                 this.setState({ skills: ski, loading: false });
             }
         } else {
-            this.setState({ skills: [new SkillModel(cId)], loading: false });
+            this.setState({ skills: [new SkillModel({ curriculumId: cId })], loading: false });
         }
     }
 
@@ -125,7 +126,7 @@ export class CurriculumAbiliity extends Component {
 
         var aca = this.state.academicEducations;
 
-        aca.push(new AcademicEducationModel(aca[0].curriculumId));
+        aca.push(new AcademicEducationModel({ curriculumId: aca[0].curriculumId }));
 
         this.setState({ academicEducations: aca });
     };
@@ -135,7 +136,7 @@ export class CurriculumAbiliity extends Component {
 
         var cou = this.state.courses;
 
-        cou.push(new CourseModel(cou[0].curriculumId));
+        cou.push(new CourseModel({ curriculumId: cou[0].curriculumId }));
 
         this.setState({ courses: cou });
     };
@@ -145,7 +146,7 @@ export class CurriculumAbiliity extends Component {
 
         var ski = this.state.skills;
 
-        ski.push(new SkillModel(ski[0].curriculumId));
+        ski.push(new SkillModel({ curriculumId: ski[0].curriculumId }));
 
         this.setState({ skills: ski });
     };
@@ -157,53 +158,128 @@ export class CurriculumAbiliity extends Component {
 
     handleChangeacademicEducations(e, index) {
         const target = e.target;
-        this.state.experiences[index][target.name] = target.value;
+
+        var aca = this.state.academicEducations;
+        aca[index][target.name] = target.value;
+        this.setState({ academicEducations: aca });
     }
     handleChangeCourse(e, index) {
         const target = e.target;
-        this.state.experiences[index][target.name] = target.value;
+
+        var cou = this.state.courses;
+        cou[index][target.name] = target.value;
+        this.setState({ courses: cou });
     }
     handleChangeSkill(e, index) {
         const target = e.target;
-        this.state.experiences[index][target.name] = target.value;
+
+        var ski = this.state.skills;
+        ski[index][target.name] = target.value;
+        this.setState({ skills: ski });
     }
 
     async handleSave(e) {
         e.preventDefault();
+        var cId = Number(this.props.match.params["id"]);
 
-        for (var i = 0; i < this.state.experiences.length;i++) {
+        this.handleSaveAcademicEducations();
+        this.handleSaveCourse();
+        this.handleSaveSkill();
+
+        this.props.history.push("/c/" + cId);
+    }
+
+    async handleSaveAcademicEducations() {
+
+        for (var i = 0; i < this.state.academicEducations.length;i++) {
             
-            const exp = this.state.experiences[i];
+            const aca = this.state.academicEducations[i];
 
-
-            if (exp.id > 0) {
-                await fetch('api/Experiences/' + exp.id, {
+            if (aca.id > 0) {
+                await fetch('api/AcademicEducations/' + aca.id, {
                     method: "PUT",
                     contentType: 'application/json; charset=UTF-8',
                     headers: { 'Content-Type': 'application/json' },
                     dataType: 'json',
-                    body: JSON.stringify(exp)
+                    body: JSON.stringify(aca)
                 })
                     .then(result => result.text())
                     .then(data => this.setState({ Id: data.id }));
             }
             else {
-                await fetch('api/Experiences/', {
+                await fetch('api/AcademicEducations/', {
                     method: "POST",
                     headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify(exp)
+                    body: JSON.stringify(aca)
                 })
                     .then(result => result.text())
                     .then(data => console.log(data));
             }
         }
-        this.props.history.push("/Curriculum/Edit");
+    }
+
+    async handleSaveCourse() {
+
+        for (var i = 0; i < this.state.courses.length; i++) {
+
+            const cou = this.state.courses[i];
+
+            if (cou.id > 0) {
+                await fetch('api/Courses/' + cou.id, {
+                    method: "PUT",
+                    contentType: 'application/json; charset=UTF-8',
+                    headers: { 'Content-Type': 'application/json' },
+                    dataType: 'json',
+                    body: JSON.stringify(cou)
+                })
+                    .then(result => result.text())
+                    .then(data => this.setState({ Id: data.id }));
+            }
+            else {
+                await fetch('api/Courses/', {
+                    method: "POST",
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(cou)
+                })
+                    .then(result => result.text())
+                    .then(data => console.log(data));
+            }
+        }
+    }
+
+    async handleSaveSkill() {
+
+        for (var i = 0; i < this.state.skills.length; i++) {
+
+            const ski = this.state.skills[i];
+
+            if (ski.id > 0) {
+                await fetch('api/Skills/' + ski.id, {
+                    method: "PUT",
+                    contentType: 'application/json; charset=UTF-8',
+                    headers: { 'Content-Type': 'application/json' },
+                    dataType: 'json',
+                    body: JSON.stringify(ski)
+                })
+                    .then(result => result.text())
+                    .then(data => this.setState({ Id: data.id }));
+            }
+            else {
+                await fetch('api/Skills/', {
+                    method: "POST",
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(ski)
+                })
+                    .then(result => result.text())
+                    .then(data => console.log(data));
+            }
+        }
     }
 
     render() {
         let contents = this.state.loading
             ? <p><em> Carregando... </em></p>
-            : this.renderExperiencia();
+            : this.renderAbiliity();
         return (
             <div>
                 {contents}
@@ -211,7 +287,7 @@ export class CurriculumAbiliity extends Component {
         );
     }
 
-    renderExperiencia() {
+    renderAbiliity() {
         return (
             <div>
                 <form onSubmit={this.handleSave}>
@@ -221,18 +297,18 @@ export class CurriculumAbiliity extends Component {
                                 <input type="hidden" name="id" value={academicEducation.id} />
                                 <div className="row">
                                     <div className="input-group col-md-12">
-                                        <input className="form-control company" type="text" name="institution" id={index} placeholder="Contratante" defaultValue={academicEducation.institution} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="text" name="institution" id={index} placeholder="Instituição" defaultValue={academicEducation.institution} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-group col-md-6">
-                                        <input className="form-control occupation" type="text" name="course" placeholder="Ocupação" defaultValue={academicEducation.course} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="text" name="course" placeholder="Curso" defaultValue={academicEducation.course} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
                                     </div>
                                     <div className="input-group col-md-3">
-                                        <input className="form-control dateHiring" type="text" name="dateIntial" placeholder="Data de Inicio" defaultValue={academicEducation.dateIntial} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="date" name="dateInitial" placeholder="Data de Inicio" defaultValue={academicEducation.dateInitial} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
                                     </div>
                                     <div className="input-group col-md-3">
-                                        <input className="form-control dateResignation" type="text" name="dateConclusion" placeholder="Data de Conclusão" defaultValue={academicEducation.dateConclusion} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="date" name="dateConclusion" placeholder="Data de Conclusão" defaultValue={academicEducation.dateConclusion} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +316,6 @@ export class CurriculumAbiliity extends Component {
                     
                         <div className="row">
                             <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success float-right" value={this.academicEducations}>Salvar</button>
                                 <button type="submit" className="btn btn-success" onClick={this.handleAddAcademicEducation} >Adcionar Formação</button>
                             </div>
                         </div>
@@ -252,18 +327,18 @@ export class CurriculumAbiliity extends Component {
                                 <input type="hidden" name="id" value={course.id} />
                                 <div className="row">
                                     <div className="input-group col-md-12">
-                                        <input className="form-control company" type="text" name="institution" id={index} placeholder="Contratante" defaultValue={course.institution} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="text" name="institution" id={index} placeholder="Instituição" defaultValue={course.institution} onBlur={(e) => this.handleChangeCourse(e, index)} required />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-group col-md-6">
-                                        <input className="form-control occupation" type="text" name="name" placeholder="Ocupação" defaultValue={course.name} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="text" name="name" placeholder="Nome do Curso" defaultValue={course.name} onBlur={(e) => this.handleChangeCourse(e, index)} required />
                                     </div>
                                     <div className="input-group col-md-3">
-                                        <input className="form-control dateHiring" type="text" name="dateIntial" placeholder="Data de Inicio" defaultValue={course.dateIntial} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="date" name="dateInitial" placeholder="Data de Inicio" defaultValue={course.dateInitial} onBlur={(e) => this.handleChangeCourse(e, index)} required />
                                     </div>
                                     <div className="input-group col-md-3">
-                                        <input className="form-control dateResignation" type="text" name="dateConclusion" placeholder="Data de Conclusão" defaultValue={course.dateConclusion} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="date" name="dateConclusion" placeholder="Data de Conclusão" defaultValue={course.dateConclusion} onBlur={(e) => this.handleChangeCourse(e, index)} required />
                                     </div>
                                 </div>
                             </div>
@@ -271,27 +346,26 @@ export class CurriculumAbiliity extends Component {
 
                         <div className="row">
                             <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success float-right" value={this.courses}>Salvar</button>
                                 <button type="submit" className="btn btn-success" onClick={this.handleAddCourse} >Adcionar Curso</button>
                             </div>
                         </div>
                     </div>
 
-                    <div className="courses">
+                    <div className="skills">
                         {this.state.skills.map((skill, index) => (
                             <div key={index} className="course">
                                 <input type="hidden" name="id" value={skill.id} />
                                 <div className="row">
                                     <div className="input-group col-md-12">
-                                        <input className="form-control company" type="text" name="title" id={index} placeholder="Titulo" defaultValue={skill.title} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="text" name="title" id={index} placeholder="Titulo" defaultValue={skill.title} onBlur={(e) => this.handleChangeSkill(e, index)} required />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-group col-md-6">
-                                        <input className="form-control occupation" type="text" name="skillTime" placeholder="Tempo" defaultValue={skill.skillTime} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="text" name="skillTime" placeholder="Tempo" defaultValue={skill.skillTime} onBlur={(e) => this.handleChangeSkill(e, index)} required />
                                     </div>
                                     <div className="input-group col-md-3">
-                                        <input className="form-control dateHiring" type="text" name="skillNivel" placeholder="Nivel de Habilidade" defaultValue={skill.skillNivel} onChange={(e) => this.handleChange(e, index)} required />
+                                        <input className="form-control" type="text" name="skillNivel" placeholder="Nivel de Habilidade" defaultValue={skill.skillNivel} onBlur={(e) => this.handleChangeSkill(e, index)} required />
                                     </div>
                                 </div>
                             </div>
@@ -299,8 +373,12 @@ export class CurriculumAbiliity extends Component {
 
                         <div className="row">
                             <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success float-right" value={this.skills}>Salvar</button>
                                 <button type="submit" className="btn btn-success" onClick={this.handleAddSkill} >Adcionar Habilidade</button>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="form-group col-md-12">
+                                <button type="submit" className="btn btn-success float-right" value={this.skills}>Salvar</button>
                             </div>
                         </div>
                     </div>

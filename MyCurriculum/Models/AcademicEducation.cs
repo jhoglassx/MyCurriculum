@@ -13,11 +13,11 @@ namespace MyCurriculum.Models
         public string Course { get; set;}
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime DateIntial { get; set; }//Data de inicio do curso
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime DateInitial { get; set; }//Data de inicio do curso
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DateConclusion { get; set; }//Data de Conclução do curso
         public DateTime Created_at { get; set; }
         public DateTime Cpdated_at { get; set; }

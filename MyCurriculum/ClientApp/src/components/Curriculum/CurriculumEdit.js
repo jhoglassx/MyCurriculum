@@ -1,26 +1,27 @@
 ﻿import React, { Component } from 'react';
-import { CurriculumExperience } from '../Curriculum/CurriculumExperience';
 
 export class CurriculumModel {
-    constructor() {
-        this.id = 0;
-        this.title = "";
-        this.email = "";
-        this.telephone = "";
-        this.cellphone = "";
-        this.resume = "";
+    constructor(props) {
+        this.id = props.id > 0 ? props.id : 0;
+        this.title = props.id > 0 ? props.title : "";
+        this.name = props.id > 0 ? props.name : "";
+        this.profession = props.id > 0 ? props.profession : "";
+        this.email = props.id > 0 ? props.email : "";
+        this.telephone = props.id > 0 ? props.telephone : "";
+        this.cellphone = props.id > 0 ? props.cellphone : "";
+        this.resume = props.id > 0 ? props.resume : "";
     }
 }
 
 export class AdressModel {
-    constructor() {
-        this.id = 0;
-        this.curriculumId = 0;
-        this.zipCode = "";
-        this.road = "";
-        this.district = "";
-        this.city = "";
-        this.state = "";
+    constructor(props) {
+        this.id = props.id > 0 ? props.id : 0;
+        this.curriculumId = props.id > 0 ? props.curriculumId : 0;
+        this.zipCode = props.id > 0 ? props.zipCode : "";
+        this.road = props.id > 0 ? props.road : "";
+        this.district = props.id > 0 ? props.district : "";
+        this.city = props.id > 0 ? props.city : "";
+        this.state = props.id > 0 ? props.state : "";
     }
 }
 
@@ -29,8 +30,8 @@ export class CurriculumEdit extends Component {
         super(props);
         this.state = {
             title: "",
-            curriculum: new CurriculumModel(),
-            adress: new AdressModel(),
+            curriculum: "",
+            adress: "",
             loading: true
         };
         this.initialize();
@@ -41,7 +42,7 @@ export class CurriculumEdit extends Component {
 
     async initialize() {
         
-        var id = this.props.match.params["id"];
+        var id = Number(this.props.match.params["id"]);
         
         if (id > 0) {
             const response = await fetch('api/Curriculums/' + id);
@@ -51,7 +52,7 @@ export class CurriculumEdit extends Component {
         }
         else
         {
-            this.state = { title: "Create", curriculum: new CurriculumModel(), adress: new AdressModel(), loading: false };
+            this.state = { title: "Create", curriculum: new CurriculumModel({ id: 0 }), adress: new AdressModel({id:0}), loading: false };
         }
         
     }
@@ -137,12 +138,18 @@ export class CurriculumEdit extends Component {
 
     handleChangeCurriculum(e) {
         const target = e.target;
-        this.state.curriculum[target.name] = target.value;
+
+        var cur = this.state.curriculum;
+        cur[target.name] = target.value;
+        this.setState({ curriculum: cur });
     }
 
     handleChangeAdress(e) {
         const target = e.target;
-        this.state.adress[target.name] = target.value;
+
+        var adr = this.state.adress;
+        adr[target.name] = target.value;
+        this.setState({ adress: adr });
     }
 
     async handleChangeCep(event) {
@@ -214,7 +221,7 @@ export class CurriculumEdit extends Component {
                         </div>
                         <div className="row">
                             <div className="input-group col-md-12">
-                                <textarea className="form-control resume" name="resume" required>
+                                <textarea className="form-control resume" name="resume" onBlur={(e) => this.handleChangeCurriculum(e)} required>
                                     {this.state.curriculum.resume}
                                 </textarea>
                             </div>

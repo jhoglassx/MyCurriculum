@@ -10,7 +10,7 @@ import { CurriculumEdit } from './components/Curriculum/CurriculumEdit';
 import { CurriculumExperience } from './components/Curriculum/CurriculumExperience';
 import { CurriculumAbiliity } from './components/Curriculum/CurriculumAbiliity';
 import './custom.css';
-/*import './components/Curriculum/Curriculum.css';*/
+
 import './components/Curriculum/CurriculumEdit.css';
 
 export default class App extends Component {

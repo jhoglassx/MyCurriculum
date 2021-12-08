@@ -92,3 +92,7 @@
     .curriculum_right .experience div.company {
         font-weight:bold;
     }
+
+.print{
+    float:right;
+}
