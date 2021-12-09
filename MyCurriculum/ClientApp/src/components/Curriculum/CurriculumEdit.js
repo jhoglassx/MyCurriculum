@@ -52,7 +52,7 @@ export class CurriculumEdit extends Component {
         }
         else
         {
-            this.state = { title: "Create", curriculum: new CurriculumModel({ id: 0 }), adress: new AdressModel({id:0}), loading: false };
+            this.state = { title: "Criar Novo Curriculo", curriculum: new CurriculumModel({ id: 0 }), adress: new AdressModel({id:0}), loading: false };
         }
         
     }
@@ -67,7 +67,7 @@ export class CurriculumEdit extends Component {
 
         for (var i = 0; i < dataFilter.length; i++) {
             //adress.push(dataFilter[i]);
-            this.setState({ title: "Edit", curriculum: this.state.curriculum, adress: dataFilter[i], loading: false });
+            this.setState({ title: "Editar meu Curriculo", curriculum: this.state.curriculum, adress: dataFilter[i], loading: false });
         }
 
     }
@@ -180,7 +180,7 @@ export class CurriculumEdit extends Component {
             : this.renderEditCurriculum();
         return (
             <div>
-                <h1>{this.state.title}</h1>
+                <h3>{this.state.title}</h3>
                 <p>Tela do Curriculum</p>
                 {contents}
             </div>
