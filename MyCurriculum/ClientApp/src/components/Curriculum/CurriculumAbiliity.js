@@ -289,21 +289,25 @@ export class CurriculumAbiliity extends Component {
 
     renderAbiliity() {
         return (
-            <div>
+            <div className="abiliitys">
                 <form onSubmit={this.handleSave}>
-                    <div className="academicEducations">
+                    <div className=" academicEducations">
+                        <div className="card-header">
+                            <h5 class="card-title">Formação Academica</h5>
+                        </div>
                         {this.state.academicEducations.map((academicEducation, index) => (
-                            <div key={index} className="academicEducation">
+                            <div key={index} className="card card-item academicEducation">
                                 <input type="hidden" name="id" value={academicEducation.id} />
                                 <div className="row">
                                     <div className="input-group col-md-12">
-                                        <input className="form-control" type="text" name="institution" id={index} placeholder="Instituição" defaultValue={academicEducation.institution} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
+                                        <input className="form-control" type="text" name="course" placeholder="Curso" defaultValue={academicEducation.course} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-group col-md-6">
-                                        <input className="form-control" type="text" name="course" placeholder="Curso" defaultValue={academicEducation.course} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
+                                        <input className="form-control" type="text" name="institution" id={index} placeholder="Instituição" defaultValue={academicEducation.institution} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
                                     </div>
+                                        
                                     <div className="input-group col-md-3">
                                         <input className="form-control" type="date" name="dateInitial" placeholder="Data de Inicio" defaultValue={academicEducation.dateInitial} onBlur={(e) => this.handleChangeacademicEducations(e, index)} required />
                                     </div>
@@ -313,26 +317,29 @@ export class CurriculumAbiliity extends Component {
                                 </div>
                             </div>
                         ))}
-                    
+                        
                         <div className="row">
-                            <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success" onClick={this.handleAddAcademicEducation} >Adcionar Formação</button>
-                            </div>
+                            <button type="submit" className="btn btn-sm btn-success" onClick={this.handleAddAcademicEducation} >Adcionar Formação</button>
                         </div>
                     </div>
 
-                    <div className="courses">
+     
+                    <div class="courses">
+                        <div class="card-header">
+                            <h5 class="card-title">Cursos</h5>
+                        </div>
                         {this.state.courses.map((course, index) => (
-                            <div key={index} className="course">
+                            <div key={index} className="card card-item course">
                                 <input type="hidden" name="id" value={course.id} />
                                 <div className="row">
                                     <div className="input-group col-md-12">
-                                        <input className="form-control" type="text" name="institution" id={index} placeholder="Instituição" defaultValue={course.institution} onBlur={(e) => this.handleChangeCourse(e, index)} required />
+                                        <input className="form-control" type="text" name="name" placeholder="Nome do Curso" defaultValue={course.name} onBlur={(e) => this.handleChangeCourse(e, index)} required />
                                     </div>
+                                        
                                 </div>
                                 <div className="row">
                                     <div className="input-group col-md-6">
-                                        <input className="form-control" type="text" name="name" placeholder="Nome do Curso" defaultValue={course.name} onBlur={(e) => this.handleChangeCourse(e, index)} required />
+                                        <input className="form-control" type="text" name="institution" id={index} placeholder="Instituição" defaultValue={course.institution} onBlur={(e) => this.handleChangeCourse(e, index)} required />
                                     </div>
                                     <div className="input-group col-md-3">
                                         <input className="form-control" type="date" name="dateInitial" placeholder="Data de Inicio" defaultValue={course.dateInitial} onBlur={(e) => this.handleChangeCourse(e, index)} required />
@@ -343,25 +350,23 @@ export class CurriculumAbiliity extends Component {
                                 </div>
                             </div>
                         ))}
-
                         <div className="row">
-                            <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success" onClick={this.handleAddCourse} >Adcionar Curso</button>
-                            </div>
+                            <button type="submit" className="btn btn-sm btn-success" onClick={this.handleAddCourse} >Adcionar Curso</button>
                         </div>
                     </div>
 
-                    <div className="skills">
+                    <div class="skills">
+                        <div class="card-header">
+                            <h5 class="card-title">Habilidades</h5>
+                        </div>
                         {this.state.skills.map((skill, index) => (
-                            <div key={index} className="course">
+                            <div key={index} className="card card-item course col-md-5">
                                 <input type="hidden" name="id" value={skill.id} />
                                 <div className="row">
-                                    <div className="input-group col-md-12">
+                                    <div className="input-group col-md-6">
                                         <input className="form-control" type="text" name="title" id={index} placeholder="Titulo" defaultValue={skill.title} onBlur={(e) => this.handleChangeSkill(e, index)} required />
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="input-group col-md-6">
+                                    <div className="input-group col-md-3">
                                         <input className="form-control" type="text" name="skillTime" placeholder="Tempo" defaultValue={skill.skillTime} onBlur={(e) => this.handleChangeSkill(e, index)} required />
                                     </div>
                                     <div className="input-group col-md-3">
@@ -370,18 +375,15 @@ export class CurriculumAbiliity extends Component {
                                 </div>
                             </div>
                         ))}
-
                         <div className="row">
-                            <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success" onClick={this.handleAddSkill} >Adcionar Habilidade</button>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="form-group col-md-12">
-                                <button type="submit" className="btn btn-success float-right" value={this.skills}>Salvar</button>
-                            </div>
+                            <button type="submit" className="btn btn-sm btn-success" onClick={this.handleAddSkill} >Adcionar Habilidade</button>
                         </div>
                     </div>
+
+                    <div className="row">
+                        <button type="submit" className="btn btn-success float-right" value={this.skills}>Salvar</button>
+                    </div>
+
                 </form>
                 
             </div >

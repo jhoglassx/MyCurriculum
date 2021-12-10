@@ -115,39 +115,50 @@ export class CurriculumExperience extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSave}>
-                    {this.state.experiences.map((experience, index) => (
-                        <div key={index} className="experience">
-                            <input type="hidden" name="id" value={experience.id} />
-                            <div className="row">
-                                <div className="input-group col-md-12">
-                                    <input className="form-control company" type="text" name="company" id={index} placeholder="Contratante" defaultValue={experience.company} onBlur={(e) => this.handleChange(e, index)} required />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="input-group col-md-6">
-                                    <input className="form-control occupation" type="text" name="occupation" placeholder="Ocupação" defaultValue={experience.occupation} onBlur={(e) => this.handleChange(e, index)} required />
-                                </div>
-                                <div className="input-group col-md-3">
-                                    <input className="form-control dateHiring" type="date" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onBlur={(e) => this.handleChange(e, index)} required />
-                                </div>
-                                <div className="input-group col-md-3">
-                                    <input className="form-control dateResignation" type="date" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onBlur={(e) => this.handleChange(e, index)}/>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="input-group col-md-12">
-                                    <textarea className="form-control description" name="description" onBlur={(e) => this.handleChange(e, index)} required>
-                                        {experience.description}
-                                    </textarea>
-                                </div>
-                            </div>
+
+                    <div class="experiences">
+                        <div class="card card-header">
+                            Featured
                         </div>
-                    ))}
-                    
+                        {this.state.experiences.map((experience, index) => (
+                            <div key={index} className="card card-item experience">
+                                <input type="hidden" name="id" value={experience.id} />
+                                <div className="row">
+                                    <div className="input-group col-md-12">
+                                        <input className="form-control company" type="text" name="company" id={index} placeholder="Contratante" defaultValue={experience.company} onBlur={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="input-group col-md-6">
+                                        <input className="form-control occupation" type="text" name="occupation" placeholder="Ocupação" defaultValue={experience.occupation} onBlur={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                    <div className="input-group col-md-3">
+                                        <input className="form-control dateHiring" type="date" name="dateHiring" placeholder="Data de Contratação" defaultValue={experience.dateHiring} onBlur={(e) => this.handleChange(e, index)} required />
+                                    </div>
+                                    <div className="input-group col-md-3">
+                                        <input className="form-control dateResignation" type="date" name="dateResignation" placeholder="Data da saida" defaultValue={experience.dateResignation} onBlur={(e) => this.handleChange(e, index)} />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="input-group col-md-12">
+                                        <textarea className="form-control description" name="description" onBlur={(e) => this.handleChange(e, index)} required>
+                                            {experience.description}
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+ 
+                        <div className="form-group col-md-12">
+                            <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
+                        </div>
+                    </div>
+
+
                     <div className="row">
                         <div className="form-group col-md-12">
                             <button type="submit" className="btn btn-success float-right" value={this.experiences}>Salvar</button>
-                            <button type="submit" className="btn btn-success" onClick={this.handleAddExperience} >Adcionar Experiencia</button>
                         </div>
                     </div>
                 </form>
